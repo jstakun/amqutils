@@ -8,25 +8,32 @@ import javax.jms.MessageConsumer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.naming.NamingException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.apache.activemq.util.ByteSequence;
 
-public class TransactionsConsumer implements Runnable, ExceptionListener {
-  
-	//private static final String topicName = "routinginfo";
-	private static final String queueName = "transactions";
-	private static final String user = "userldd";
-	private static final String password = "JfYG3buP";
-    private static final String url = "tcp://master.osecloud.com:61616";
-	private static final boolean transacted = false;
+public class TransactionsConsumer implements Runnable, ExceptionListener, Commons {
 	
-	public static void main(String[] args) throws NamingException, JMSException
+	private static int max_iter = MAX_ITER;
+ 
+	public static void main(String[] args)
 	{
-		TransactionsConsumer consumer = new TransactionsConsumer();
-		consumer.run();
+		try {
+			if (args.length > 0) {
+				max_iter = Integer.parseInt(args[0]);
+				System.out.println("I will iterate " + max_iter + " times.");
+			}
+		} catch (Exception e) {
+			
+		}
+		
+		try {
+			TransactionsConsumer consumer = new TransactionsConsumer();
+			consumer.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void run() {
@@ -35,7 +42,7 @@ public class TransactionsConsumer implements Runnable, ExceptionListener {
 
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
             connection = connectionFactory.createConnection(user, password);
-            //connection.setClientID("demoClient");
+            connection.setClientID("demoClient");
             connection.start();
             connection.setExceptionListener(this);
             Session session = connection.createSession(transacted, Session.AUTO_ACKNOWLEDGE);
@@ -53,9 +60,9 @@ public class TransactionsConsumer implements Runnable, ExceptionListener {
             
             System.out.println("Starting consumer");
 
-            for (int i=0;i<1000;i++) {
+            for (int i=0;i<max_iter;i++) {
             	Message message = consumer.receive(2000);
-
+            	System.out.println("Iteration " + i + " of " + MAX_ITER);
             	if (message instanceof TextMessage) {
             		TextMessage textMessage = (TextMessage) message;
             		String text = textMessage.getText();
@@ -106,5 +113,6 @@ public class TransactionsConsumer implements Runnable, ExceptionListener {
 	
     public synchronized void onException(JMSException ex) {
         System.out.println("JMS Exception occured.  Shutting down client.");
+        ex.printStackTrace();
     }
 }
