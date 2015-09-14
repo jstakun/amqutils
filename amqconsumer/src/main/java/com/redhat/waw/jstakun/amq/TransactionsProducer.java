@@ -48,16 +48,17 @@ public class TransactionsProducer implements Runnable, ExceptionListener, Common
 			Queue queue = session.createQueue(queueName);
 			MessageProducer producer = session.createProducer(queue);
 			
-			System.out.println("Starting consumer");
+			System.out.println("Starting producer");
 
 			for (int i = 0; i < max_iter; i++) {
 				String transaction = "{\"" + System.currentTimeMillis() + i + "\":\"29\",\"customerid\":\"CST01010\",\"amount\":523.45,\"transactionDate\":" + System.currentTimeMillis() + "}";
 				TextMessage message = session.createTextMessage();
 				message.setText(transaction);
-				producer.send(message);			
+				producer.send(message);		
+				System.out.println("Created message (" + i + "/" + max_iter + ").");
 			}
 
-			System.out.println("Closing consumer");
+			System.out.println("Closing producer");
 
 			producer.close();
 			session.close();

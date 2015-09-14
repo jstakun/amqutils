@@ -17,6 +17,7 @@ public class TransactionsConsumer implements Runnable, ExceptionListener, Common
 	
 	private static int max_iter = MAX_ITER;
  
+	//java -jar amqutils-0.0.1-SNAPSHOT.jar 5
 	public static void main(String[] args)
 	{
 		try {
@@ -62,7 +63,7 @@ public class TransactionsConsumer implements Runnable, ExceptionListener, Common
 
             for (int i=0;i<max_iter;i++) {
             	Message message = consumer.receive(2000);
-            	System.out.println("Iteration " + i + " of " + MAX_ITER);
+            	System.out.println("Iteration (" + i + "/" + MAX_ITER + ").");
             	if (message instanceof TextMessage) {
             		TextMessage textMessage = (TextMessage) message;
             		String text = textMessage.getText();
@@ -77,20 +78,6 @@ public class TransactionsConsumer implements Runnable, ExceptionListener, Common
             	}
             }
             
-            //---
-            //:action: :create_application
-            //:app_name: wasndtest
-            //:namespace: ose2
-            //:scalable: false
-            //:ha: false
-            
-            //---
-            //:action: :delete_application
-            //:app_name: wasndtest
-            //:namespace: ose2
-            //:scalable: false
-            //:ha: false
-
             System.out.println("Closing consumer");
             
             consumer.close();
