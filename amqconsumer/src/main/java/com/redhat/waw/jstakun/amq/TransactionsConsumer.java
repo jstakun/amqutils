@@ -5,26 +5,27 @@ import javax.jms.ExceptionListener;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.jms.Topic;
 import javax.naming.NamingException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.apache.activemq.util.ByteSequence;
 
-public class SampleConsumer implements Runnable, ExceptionListener {
+public class TransactionsConsumer implements Runnable, ExceptionListener {
   
-	private static final String topicName = "routinginfo";
-	private static final String user = "routinginfo";
-	private static final String password = "manager1";
-    private static final String url = "tcp://broker.redhat.pl:61616";
+	//private static final String topicName = "routinginfo";
+	private static final String queueName = "transactions";
+	private static final String user = "userldd";
+	private static final String password = "JfYG3buP";
+    private static final String url = "tcp://master.osecloud.com:61616";
 	private static final boolean transacted = false;
 	
 	public static void main(String[] args) throws NamingException, JMSException
 	{
-		SampleConsumer consumer = new SampleConsumer();
+		TransactionsConsumer consumer = new TransactionsConsumer();
 		consumer.run();
 	}
 	
@@ -34,7 +35,7 @@ public class SampleConsumer implements Runnable, ExceptionListener {
 
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
             connection = connectionFactory.createConnection(user, password);
-            connection.setClientID("demoClient");
+            //connection.setClientID("demoClient");
             connection.start();
             connection.setExceptionListener(this);
             Session session = connection.createSession(transacted, Session.AUTO_ACKNOWLEDGE);
@@ -44,8 +45,11 @@ public class SampleConsumer implements Runnable, ExceptionListener {
             //MessageConsumer consumer = session.createConsumer(destination);
             
             //durable subscriber
-            Topic topic = session.createTopic(topicName);
-            MessageConsumer consumer = session.createDurableSubscriber(topic, "demoConsumer");
+            //Topic topic = session.createTopic(topicName);
+            //MessageConsumer consumer = session.createDurableSubscriber(topic, "demoConsumer");
+            
+            Queue queue = session.createQueue(queueName);
+            MessageConsumer consumer =session.createConsumer(queue);
             
             System.out.println("Starting consumer");
 
