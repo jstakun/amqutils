@@ -59,11 +59,11 @@ public class TransactionsConsumer implements Runnable, ExceptionListener, Common
             Queue queue = session.createQueue(queueName);
             MessageConsumer consumer =session.createConsumer(queue);
             
-            System.out.println("Starting consumer");
+            System.out.println("Starting consumer...");
 
-            for (int i=0;i<max_iter;i++) {
+            for (int i = 1; i <= max_iter; i++) {
             	Message message = consumer.receive(2000);
-            	System.out.println("Iteration (" + i + "/" + MAX_ITER + ").");
+            	System.out.println("Iteration (" + i + "/" + max_iter + ")");
             	if (message instanceof TextMessage) {
             		TextMessage textMessage = (TextMessage) message;
             		String text = textMessage.getText();
@@ -73,12 +73,14 @@ public class TransactionsConsumer implements Runnable, ExceptionListener, Common
             		ByteSequence bytesSeq = bytesMessage.getContent();
             		String text = new String (bytesSeq.data);
             		System.out.println(i + ". Decoded: " + text);
+            	} else if (message == null) {
+            		System.out.println(i + ". No messages received");
             	} else {
             		System.out.println(i + ". Received: " + message);
             	}
             }
             
-            System.out.println("Closing consumer");
+            System.out.println("Closing consumer.");
             
             consumer.close();
             session.close();

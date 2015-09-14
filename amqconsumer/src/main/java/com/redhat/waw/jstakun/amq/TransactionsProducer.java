@@ -14,6 +14,7 @@ public class TransactionsProducer implements Runnable, ExceptionListener, Common
 	
 	private static int max_iter = MAX_ITER;
 	
+	//java -cp amqutils-0.0.1-SNAPSHOT.jar com.redhat.waw.jstakun.amq.TransactionsProducer 5
 	public static void main(String[] args) {
 		
 		try {
@@ -48,17 +49,17 @@ public class TransactionsProducer implements Runnable, ExceptionListener, Common
 			Queue queue = session.createQueue(queueName);
 			MessageProducer producer = session.createProducer(queue);
 			
-			System.out.println("Starting producer");
+			System.out.println("Starting producer...");
 
-			for (int i = 0; i < max_iter; i++) {
+			for (int i = 1; i <= max_iter; i++) {
 				String transaction = "{\"" + System.currentTimeMillis() + i + "\":\"29\",\"customerid\":\"CST01010\",\"amount\":523.45,\"transactionDate\":" + System.currentTimeMillis() + "}";
 				TextMessage message = session.createTextMessage();
 				message.setText(transaction);
 				producer.send(message);		
-				System.out.println("Created message (" + i + "/" + max_iter + ").");
+				System.out.println("Created message (" + i + "/" + max_iter + ")");
 			}
 
-			System.out.println("Closing producer");
+			System.out.println("Closing producer.");
 
 			producer.close();
 			session.close();
