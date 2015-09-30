@@ -1,5 +1,7 @@
 package com.redhat.waw.jstakun.amq;
 
+import java.util.ResourceBundle;
+
 import javax.jms.Connection;
 import javax.jms.ExceptionListener;
 import javax.jms.JMSException;
@@ -10,14 +12,19 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-public class TransactionsProducer implements Runnable, ExceptionListener, Commons {
+public class TransactionsProducer implements Runnable, ExceptionListener {
 	
-	private static int max_iter = MAX_ITER;
+	private static int max_iter = 100;
+	private static ResourceBundle connProps;
 	
 	//java -cp amqutils-0.0.1-SNAPSHOT.jar com.redhat.waw.jstakun.amq.TransactionsProducer 5
 	public static void main(String[] args) {
 		
 		try {
+			connProps = ResourceBundle.getBundle("amq");
+			if (connProps == null) {
+				throw new NullPointerException("missing amq.properties file!");
+			}
 			if (args.length > 0) {
 				max_iter = Integer.parseInt(args[0]);
 				System.out.println("I will iterate " + max_iter + " times.");
@@ -39,14 +46,14 @@ public class TransactionsProducer implements Runnable, ExceptionListener, Common
 		try {
 
 			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-					url);
-			connection = connectionFactory.createConnection(user, password);
+					connProps.getString("url"));
+			connection = connectionFactory.createConnection(connProps.getString("user"), connProps.getString("password"));
 			connection.setClientID("demoProducer");
 			connection.start();
 			connection.setExceptionListener(this);
-			Session session = connection.createSession(transacted, Session.AUTO_ACKNOWLEDGE);
+			Session session = connection.createSession(Boolean.parseBoolean(connProps.getString("transacted")), Session.AUTO_ACKNOWLEDGE);
 
-			Queue queue = session.createQueue(queueName);
+			Queue queue = session.createQueue(connProps.getString("queueName"));
 			MessageProducer producer = session.createProducer(queue);
 			
 			System.out.println("Starting producer...");

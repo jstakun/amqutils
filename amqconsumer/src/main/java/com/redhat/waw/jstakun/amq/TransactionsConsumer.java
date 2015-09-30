@@ -1,5 +1,7 @@
 package com.redhat.waw.jstakun.amq;
 
+import java.util.ResourceBundle;
+
 import javax.jms.Connection;
 import javax.jms.ExceptionListener;
 import javax.jms.JMSException;
@@ -13,14 +15,19 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.apache.activemq.util.ByteSequence;
 
-public class TransactionsConsumer implements Runnable, ExceptionListener, Commons {
+public class TransactionsConsumer implements Runnable, ExceptionListener {
 	
-	private static int max_iter = MAX_ITER;
- 
+	private static int max_iter = 100;
+	private static ResourceBundle connProps;
+	
 	//java -jar amqutils-0.0.1-SNAPSHOT.jar 5
 	public static void main(String[] args)
 	{
 		try {
+			connProps = ResourceBundle.getBundle("amq");
+			if (connProps == null) {
+				throw new NullPointerException("missing amq.properties file!");
+			}
 			if (args.length > 0) {
 				max_iter = Integer.parseInt(args[0]);
 				System.out.println("I will iterate " + max_iter + " times.");
@@ -41,12 +48,12 @@ public class TransactionsConsumer implements Runnable, ExceptionListener, Common
 		Connection connection = null;
         try {
 
-            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
-            connection = connectionFactory.createConnection(user, password);
+            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(connProps.getString("url"));
+            connection = connectionFactory.createConnection(connProps.getString("user"), connProps.getString("password"));
             connection.setClientID("demoClient");
             connection.start();
             connection.setExceptionListener(this);
-            Session session = connection.createSession(transacted, Session.AUTO_ACKNOWLEDGE);
+            Session session = connection.createSession(Boolean.parseBoolean(connProps.getString("transacted")), Session.AUTO_ACKNOWLEDGE);
 
             //non durable subscriber
             //Destination destination = session.createTopic(topicName);
@@ -56,7 +63,7 @@ public class TransactionsConsumer implements Runnable, ExceptionListener, Common
             //Topic topic = session.createTopic(topicName);
             //MessageConsumer consumer = session.createDurableSubscriber(topic, "demoConsumer");
             
-            Queue queue = session.createQueue(queueName);
+            Queue queue = session.createQueue(connProps.getString("queueName"));
             MessageConsumer consumer =session.createConsumer(queue);
             
             System.out.println("Starting consumer...");
