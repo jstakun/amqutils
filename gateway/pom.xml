@@ -239,6 +239,7 @@
             
             <bundle>mvn:org.infinispan/infinispan-client-hotrod/6.0.2.Final</bundle>
             <bundle>mvn:org.infinispan/infinispan-core/6.0.2.Final</bundle>
+            <bundle>mvn:org.infinispan/infinispan-commons/6.0.2.Final</bundle>
             
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
