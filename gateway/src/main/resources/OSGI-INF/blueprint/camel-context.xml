@@ -113,7 +113,7 @@
     	<setHeader headerName="CamelInfinispanTimeUnit">
     	    <constant>MINUTES</constant>
     	</setHeader>
-    	<to uri="infinispan://172.30.51.53:11333?cacheName=sensors&command=PUT"/>
+    	<to uri="infinispan://172.30.51.53:11333?cacheName=sensors&amp;command=PUT"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
         <log message="Received response: ${body}" loggingLevel="INFO"/>
     </route>
