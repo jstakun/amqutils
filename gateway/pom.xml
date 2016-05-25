@@ -19,6 +19,7 @@
     <fabric8.version>2.2.0.redhat-079</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <karaf.plugin.version>4.0.2.redhat-621079</karaf.plugin.version>
+    <camel-jbossdatagrid-component-version>6.5.0.Final-redhat-5</camel-jbossdatagrid-component-version>
 
     <docker.from>jboss-fuse-6/fis-karaf-openshift:1.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
@@ -62,7 +63,17 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
     </dependency>
-
+    
+    <dependency>
+    	<groupId>org.apache.camel</groupId>
+    	<artifactId>camel-mqtt</artifactId>
+    </dependency>
+    
+    <dependency>
+		<groupId>org.apache.camel</groupId>
+		<artifactId>camel-jbossdatagrid</artifactId>
+		<version>${camel-jbossdatagrid-component-version}</version>
+	</dependency>
     <!-- Karaf microcontainer dependencies -->
     <dependency>
       <!-- scope is compile so all features (there is only one) are installed into startup.properties,
@@ -79,10 +90,7 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-    	<groupId>org.apache.camel</groupId>
-    	<artifactId>camel-mqtt</artifactId>
-    </dependency>
+    
   </dependencies>
 
   <build>
