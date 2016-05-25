@@ -121,6 +121,7 @@
             <Import-Package>io.fabric8.mq.core,
               io.fabric8.mq.camel,
               org.apache.activemq.pool,
+              org.fusesource.hawtbuf,
               *</Import-Package>
           </instructions>
         </configuration>
