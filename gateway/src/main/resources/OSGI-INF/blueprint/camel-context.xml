@@ -107,6 +107,12 @@
     	<setHeader headerName="CamelInfinispanValue">
       		<simple>Sensor ${body}</simple>
     	</setHeader>
+    	<setHeader headerName="CamelInfinispanLifespanTime">
+    	    <constant>60</constant>
+    	</setHeader>
+    	<setHeader headerName="CamelInfinispanTimeUnit">
+    	    <constant>MINUTES</constant>
+    	</setHeader>
     	<to uri="infinispan://172.30.51.53:11333?cacheName=sensors&command=PUT"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
         <log message="Received response: ${body}" loggingLevel="INFO"/>
