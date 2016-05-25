@@ -232,9 +232,8 @@
             <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
             
-            <bundle>mvn:org.apache.camel/camel-jbossdatagrid/${camel-jbossdatagrid-component-version}</bundle>
-            
-            
+            <bundle>mvn:org.infinispan/infinispan-remote/6.3.0.Final-redhat-5</bundle>
+                      
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
         </configuration>
