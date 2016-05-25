@@ -14,6 +14,7 @@ public class Producer {
 		MQTT mqtt = new MQTT();
 		
 		try {
+			//mqtt.setHost("master.osecloud.com", 1883);
 			mqtt.setHost("172.30.214.17", 1883);
 			mqtt.setUserName("admin");
 			mqtt.setPassword("manager1");
