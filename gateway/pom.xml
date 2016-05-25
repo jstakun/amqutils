@@ -73,6 +73,8 @@
 		<groupId>org.apache.camel</groupId>
 		<artifactId>camel-jbossdatagrid</artifactId>
 		<version>${camel-jbossdatagrid-component-version}</version>
+		<classifier>features</classifier>
+    	<type>xml</type>
 	</dependency>
 	
     <!-- Karaf microcontainer dependencies -->
