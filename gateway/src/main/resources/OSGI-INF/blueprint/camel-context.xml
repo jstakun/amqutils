@@ -107,7 +107,7 @@
     	<setHeader headerName="CamelInfinispanValue">
       		<simple>${body}</simple>
     	</setHeader>
-    	<to uri="infinispan://172.30.51.53?cacheName=sensors"/>
+    	<!-->to uri="infinispan://172.30.51.53?cacheName=sensors"/-->
     </route>
   </camelContext>
 
