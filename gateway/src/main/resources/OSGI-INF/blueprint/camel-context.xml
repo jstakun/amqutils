@@ -62,11 +62,11 @@
 
       The amq component is from fabric8 that ensures to use the broker in the kubernetes cluster
     -->
-    <route id="file-to-jms-route">
+    <!--route id="file-to-jms-route">
       <from uri="file:work/jms/input"/>
       <log message="Receiving order ${file:name}"/>
       <to uri="amq:incomingOrders"/>
-    </route>
+    </route-->
 
     <!--
       This route consumes messages from the JMS queue incomingOrders on the ActiveMQ broker within the ESB.
@@ -76,7 +76,7 @@
       moved to a directory for that country. The <otherwise/> element ensures that any file that does not meet the
       requirements for either of the <when/> elements will be moved to the work/jms/output/others directory.
     -->
-    <route id="jms-cbr-route" streamCache="true">
+    <!--route id="jms-cbr-route" streamCache="true">
       <from uri="amq:incomingOrders"/>
       <choice>
         <when>
@@ -95,7 +95,7 @@
         </otherwise>
       </choice>
       <log message="Done processing ${file:name}"/>
-    </route>
+    </route-->
     
     <route id="iot-gateway">
     	<from uri="mqtt:mqtt.sensor.receiver?host=tcp://172.30.214.17:1883&amp;subscribeTopicNames=sensor.receiver&amp;userName=admin&amp;password=manager1"/>
