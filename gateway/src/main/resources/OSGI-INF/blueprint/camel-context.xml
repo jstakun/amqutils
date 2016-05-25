@@ -102,13 +102,14 @@
         <convertBodyTo type="java.lang.String"/>
         <log message="Received following sensor data: ${body}" loggingLevel="INFO"/>
         <setHeader headerName="CamelInfinispanKey">
-      		<constant>sensor-data</constant>
+      		<constant>sensordata</constant>
     	</setHeader>
     	<setHeader headerName="CamelInfinispanValue">
-      		<simple>${body}</simple>
+      		<simple>Sensor ${body}</simple>
     	</setHeader>
-    	<to uri="infinispan://172.30.51.53:11333?cacheName=sensors"/>
-    	<log message="Updated entry ${header.CamelInfinispanKey} with value ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
+    	<to uri="infinispan://172.30.51.53:11333?cacheName=sensors&command=PUT"/>
+    	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
+        <log message="Received response: ${body}" loggingLevel="INFO"/>
     </route>
   </camelContext>
 
