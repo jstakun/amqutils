@@ -122,6 +122,7 @@
               io.fabric8.mq.camel,
               org.apache.activemq.pool,
               org.fusesource.hawtbuf,
+              org.infinispan,
               *</Import-Package>
           </instructions>
         </configuration>
