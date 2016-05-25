@@ -69,11 +69,11 @@
     	<artifactId>camel-mqtt</artifactId>
     </dependency>
     
-    <dependency>
+    <!--dependency>
 		<groupId>org.apache.camel</groupId>
 		<artifactId>camel-jbossdatagrid</artifactId>
 		<version>${camel-jbossdatagrid-component-version}</version>
-	</dependency>
+	</dependency-->
     <!-- Karaf microcontainer dependencies -->
     <dependency>
       <!-- scope is compile so all features (there is only one) are installed into startup.properties,
@@ -122,7 +122,6 @@
               io.fabric8.mq.camel,
               org.apache.activemq.pool,
               org.fusesource.hawtbuf,
-              org.infinispan,
               *</Import-Package>
           </instructions>
         </configuration>
