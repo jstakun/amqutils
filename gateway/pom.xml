@@ -69,11 +69,16 @@
     	<artifactId>camel-mqtt</artifactId>
     </dependency>
     
-    <dependency>
+    <!--dependency>
 		<groupId>org.apache.camel</groupId>
 		<artifactId>camel-jbossdatagrid</artifactId>
 		<version>${camel-jbossdatagrid-component-version}</version>
-	</dependency>
+	</dependency-->
+	
+	<dependency>
+    	<groupId>org.apache.camel</groupId>
+    	<artifactId>camel-infinispan</artifactId>
+    </dependency>
 	
     <!-- Karaf microcontainer dependencies -->
     <dependency>
@@ -226,9 +231,8 @@
             <feature>activemq-camel</feature>
             <feature>camel-blueprint</feature>
             <feature>camel-mqtt</feature>
-            <feature>camel-infinispan</feature>
          </startupFeatures>
-          <startupBundles>
+         <startupBundles>
             <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
