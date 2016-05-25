@@ -237,6 +237,9 @@
             <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
             
+            <bundle>mvn:org.infinispan/infinispan-client-hotrod/6.0.2.Final</bundle>
+            <bundle>mvn:org.infinispan/infinispan-core/6.0.2.Final</bundle>
+            
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
         </configuration>
