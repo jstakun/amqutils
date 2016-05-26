@@ -123,7 +123,7 @@
     	<setHeader headerName="CamelInfinispanTimeUnit">
     	    <constant>MINUTES</constant>
     	</setHeader-->
-    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=sensors"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=sensors&amp;sync=false"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
     	<log message="Received following response: ${header.CamelInfinispanOperationResult}" loggingLevel="INFO" />
     </route>
@@ -133,7 +133,7 @@
         <setHeader headerName="CamelInfinispanKey">
       		<constant>sensordata</constant>
     	</setHeader>
-    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=sensors&amp;command=GET"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=sensors&amp;command=GET&amp;sync=false"/>
     	<log message="Received following sensor data: ${body}" loggingLevel="INFO" /> 
      </route> 
   </camelContext>
