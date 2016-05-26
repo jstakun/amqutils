@@ -30,6 +30,16 @@
 
 
   <!--bean id="orderGenerator" class="com.redhat.waw.jstakun.gateway.OrderGenerator"/-->
+  
+   <bean id="remoteCacheManagerFactory" class="com.redhat.waw.jstakun.gateway.RemoteCacheManagerFactory">  
+	    <argument value="172.30.51.53"/>      
+	    <argument value="11333"/>      
+	</bean>
+ 
+	<bean id="cacheManager"
+    	factory-ref="remoteCacheManagerFactory" 
+    	factory-method="newRemoteCacheManager">   
+	</bean>
 
   <!--
     The namespace for the camelContext element in Blueprint is 'http://camel.apache.org/schema/blueprint'. Additionally,
@@ -123,7 +133,7 @@
         <setHeader headerName="CamelInfinispanKey">
       		<constant>sensordata</constant>
     	</setHeader>
-    	<to uri="infinispan://172.30.51.53:11333?cacheName=sensors&amp;command=GET"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=sensors&amp;command=GET"/>
     	<log message="Received following sensor data: ${body}" loggingLevel="INFO" /> 
      </route> 
   </camelContext>
