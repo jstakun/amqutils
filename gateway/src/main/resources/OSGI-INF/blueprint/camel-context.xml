@@ -29,7 +29,7 @@
              http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
 
 
-  <bean id="orderGenerator" class="com.redhat.waw.jstakun.gateway.OrderGenerator"/>
+  <!--bean id="orderGenerator" class="com.redhat.waw.jstakun.gateway.OrderGenerator"/-->
 
   <!--
     The namespace for the camelContext element in Blueprint is 'http://camel.apache.org/schema/blueprint'. Additionally,
@@ -41,14 +41,14 @@
   <camelContext xmlns="http://camel.apache.org/schema/blueprint" xmlns:order="http://fabric8.com/examples/order/v7" id="iot-gateway-context">
 
     <!-- a route to generate a random order every 5th second -->
-    <route id="generate-order">
+    <!--route id="generate-order">
       <from uri="timer:order?period=5000"/>
       <bean ref="orderGenerator" method="generateOrder"/>
       <setHeader headerName="Exchange.FILE_NAME">
         <method ref="orderGenerator" method="generateFileName"/>
       </setHeader>
       <to uri="file:work/jms/input"/>
-    </route>
+    </route-->
 
     <!--
       When this route is started, it will automatically create the work/jms/input directory where you can drop the
@@ -115,8 +115,17 @@
     	</setHeader>
     	<to uri="infinispan://172.30.51.53:11333?cacheName=sensors&amp;command=PUT"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
-        <log message="Received response: ${body}" loggingLevel="INFO"/>
+    	<log message="Received following response: ${header.CamelInfinispanOperationResult}" loggingLevel="INFO" />
     </route>
+    
+    <route id="iot-sensor-data-cache-reader">
+      	<from uri="timer:sensor-data-cache-reader?period=5000"/>
+        <setHeader headerName="CamelInfinispanKey">
+      		<constant>sensordata</constant>
+    	</setHeader>
+    	<to uri="infinispan://172.30.51.53:11333?cacheName=sensors&amp;command=GET"/>
+    	<log message="Received following sensor data: ${body}" loggingLevel="INFO" /> 
+     </route> 
   </camelContext>
 
 </blueprint>
