@@ -16,13 +16,6 @@
      permissions and limitations under the License.
 
 -->
-<!--
-   This is the OSGi Blueprint XML file defining the Camel context and routes.  Because the file is in the
-   OSGI-INF/blueprint directory inside our JAR, it will be automatically activated as soon as the bundle is installed.
-
-   The root element for any OSGi Blueprint file is 'blueprint' - you also see the namespace definitions for both the Blueprint
-   and the Camel namespaces.
--->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" 
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
@@ -36,11 +29,11 @@
 
    <ext:property-placeholder id="env.vars" placeholder-prefix="$[" placeholder-suffix="]"/> 
   
-   <cm:property-placeholder persistent-id="com.redhat.waw.jstakun.gateway">
+   <!--cm:property-placeholder persistent-id="com.redhat.waw.jstakun.gateway">
         <cm:default-properties>
             <cm:property name="CACHE_NAME" value="$[CACHE_NAME]"/>
         </cm:default-properties>
-   </cm:property-placeholder>
+   </cm:property-placeholder-->
   
   
    <bean id="remoteCacheManagerFactory" class="com.redhat.waw.jstakun.gateway.RemoteCacheManagerFactory">  
@@ -71,7 +64,7 @@
     	<setHeader headerName="CamelInfinispanTimeUnit">
     	    <constant>MINUTES</constant>
     	</setHeader-->
-    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{CACHE_NAME}}&amp;sync=false"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=$[CACHE_NAME]&amp;sync=false"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
     	<log message="Received following response: ${header.CamelInfinispanOperationResult}" loggingLevel="INFO" />
     </route>
@@ -81,7 +74,7 @@
         <setHeader headerName="CamelInfinispanKey">
       		<constant>sensordata</constant>
     	</setHeader>
-    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{CACHE_NAME}}&amp;command=GET&amp;sync=false"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=$[CACHE_NAME]&amp;command=GET&amp;sync=false"/>
     	<log message="Received following sensor data: ${body}" loggingLevel="INFO" /> 
      </route> 
 
