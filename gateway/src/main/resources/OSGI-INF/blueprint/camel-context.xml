@@ -58,19 +58,13 @@
     	<setHeader headerName="CamelInfinispanValue">
       		<simple>Sensor ${body}</simple>
     	</setHeader>
-    	<!--setHeader headerName="CamelInfinispanLifespanTime">
-    	    <constant>60</constant>
-    	</setHeader>
-    	<setHeader headerName="CamelInfinispanTimeUnit">
-    	    <constant>MINUTES</constant>
-    	</setHeader-->
     	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{CACHE_NAME}}&amp;sync=false"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
     	<log message="Received following response: ${header.CamelInfinispanOperationResult}" loggingLevel="INFO" />
     </route>
     
     <route id="iot-sensor-data-cache-reader">
-      	<from uri="timer:sensor-data-cache-reader?period=5000"/>
+      	<from uri="timer:sensor-data-cache-reader?period=60000"/>
         <setHeader headerName="CamelInfinispanKey">
       		<constant>sensordata</constant>
     	</setHeader>
