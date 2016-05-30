@@ -35,7 +35,7 @@
 
    <ext:property-placeholder placeholder-prefix="$[" placeholder-suffix="]"/> 
   
-   <cm:property-placeholder persistent-id="com.redhat.waw.jstakun.gateway" update-strategy="reload">
+   <cm:property-placeholder persistent-id="com.redhat.waw.jstakun.gateway">
         <cm:default-properties>
             <cm:property name="CACHE_NAME" value="$[CACHE_NAME]"/>
         </cm:default-properties>
