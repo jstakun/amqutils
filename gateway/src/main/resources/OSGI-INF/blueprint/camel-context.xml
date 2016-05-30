@@ -27,7 +27,7 @@
              http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0 http://aries.apache.org/schemas/blueprint-ext/blueprint-ext.xsd"
              >
 
-   <ext:property-placeholder id="env.vars" placeholder-prefix="$[" placeholder-suffix="]"/> 
+   <ext:property-placeholder id="env.vars" placeholder-prefix="[[" placeholder-suffix="]]"/> 
   
    <!--cm:property-placeholder persistent-id="com.redhat.waw.jstakun.gateway">
         <cm:default-properties>
@@ -64,7 +64,7 @@
     	<setHeader headerName="CamelInfinispanTimeUnit">
     	    <constant>MINUTES</constant>
     	</setHeader-->
-    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=$[CACHE_NAME]&amp;sync=false"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=[[CACHE_NAME]]&amp;sync=false"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
     	<log message="Received following response: ${header.CamelInfinispanOperationResult}" loggingLevel="INFO" />
     </route>
@@ -74,7 +74,7 @@
         <setHeader headerName="CamelInfinispanKey">
       		<constant>sensordata</constant>
     	</setHeader>
-    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=$[CACHE_NAME]&amp;command=GET&amp;sync=false"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName=[[CACHE_NAME]]&amp;command=GET&amp;sync=false"/>
     	<log message="Received following sensor data: ${body}" loggingLevel="INFO" /> 
      </route> 
 
