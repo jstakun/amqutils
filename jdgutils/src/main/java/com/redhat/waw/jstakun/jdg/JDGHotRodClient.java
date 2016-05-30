@@ -11,12 +11,20 @@ public class JDGHotRodClient {
 	public static void main(String[] args) {
 		
 		String cache = "default";
+		String host = "172.30.51.53";
+		int port = 11333;
 		if (args.length > 0) {
 			cache = args[0];
+			if (args.length > 1) {
+				host = args[1];
+			}
+			if (args.length > 2) {
+				port = Integer.valueOf(args[2]);
+			}
 		} 
-		System.out.println("Cache " + cache + " will be used.");
+		System.out.println("Host: " + host + ":" + port + ", cache: " + cache + " will be used.");
 		
-		RemoteCache<String, String> sensors = getRemoteCache(cache);
+		RemoteCache<String, String> sensors = getRemoteCache(cache, host, port);
 		sensors.put("sensordata", "test");
 		
 		System.out.println("Received cache data: " + sensors.get("sensordata"));
@@ -24,7 +32,7 @@ public class JDGHotRodClient {
 	}
 
 	
-	public static RemoteCache<String, String> getRemoteCache(String cache) {
+	public static RemoteCache<String, String> getRemoteCache(String cache, String host, int port) {
 		ConfigurationBuilder builder = new ConfigurationBuilder();
 		builder.addServer()
 			.host("172.30.51.53").port(11333);

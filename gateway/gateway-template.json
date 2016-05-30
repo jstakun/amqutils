@@ -266,6 +266,12 @@
                     "name": "jolokia"
                   }
                 ],
+                "env": [
+                  {
+                     "name": "CACHE_NAME",
+                     "value": "default"
+                  }
+                ],                    
                 "resources": {}
               }
             ]
