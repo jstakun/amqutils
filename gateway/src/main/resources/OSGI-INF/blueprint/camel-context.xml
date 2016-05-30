@@ -33,7 +33,7 @@
              http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.0.0.xsd"
              >
 
-   <ext:property-placeholder placeholder-prefix="$[" placeholder-suffix="]"/> 
+   <ext:property-placeholder id="env.vars" placeholder-prefix="$[" placeholder-suffix="]"/> 
   
    <cm:property-placeholder persistent-id="com.redhat.waw.jstakun.gateway">
         <cm:default-properties>
