@@ -8,10 +8,14 @@ public class Producer {
 
 	//java -cp "mqttutils-0.0.1-SNAPSHOT.jar:mqtt-client-1.12.jar:hawtbuf-1.11.jar:hawtdispatch-transport-1.21.jar:hawtdispatch-1.21.jar" com.redhat.waw.jstakun.mqtt.Producer
 	
-	private static final String message = "Hello";
+	private static String message = "Default message";
 	
 	public static void main(String[] args) {
 		MQTT mqtt = new MQTT();
+		
+		if (args.length > 0) {
+			message = args[0];
+		}
 		
 		try {
 			//mqtt.setHost("master.osecloud.com", 1883);

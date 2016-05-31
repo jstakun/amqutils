@@ -25,6 +25,8 @@ public class Consumer {
 	        Topic[] topics = {new Topic(utf8("sensor.receiver"), QoS.AT_LEAST_ONCE)};
 	        byte[] qoses = connection.subscribe(topics);
 	        
+	        System.out.println("Connection subscription status: " + new String(qoses));
+	        
 	        Message message = connection.receive();
 	        
 	        System.out.println("Received following message: " + new String(message.getPayload()));
