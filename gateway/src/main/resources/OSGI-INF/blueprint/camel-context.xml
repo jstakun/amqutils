@@ -27,14 +27,13 @@
              http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0 http://aries.apache.org/schemas/blueprint-ext/blueprint-ext.xsd"
              >
 
-   <ext:property-placeholder/> 
-  
-   <!--cm:property-placeholder id="default.vars" placeholder-prefix="{{" placeholder-suffix="}}" persistent-id="com.redhat.waw.jstakun.gateway">
+   <!--ext:property-placeholder/-->
+
+   <cm:property-placeholder id="default.vars" persistent-id="com.redhat.waw.jstakun.gateway">
         <cm:default-properties>
-            <cm:property name="CACHE_NAME" value="$[CACHE_NAME]"/>
+            <cm:property name="CACHE_NAME" value="default"/>
         </cm:default-properties>
-   </cm:property-placeholder-->
-  
+   </cm:property-placeholder>
   
    <bean id="remoteCacheManagerFactory" class="com.redhat.waw.jstakun.gateway.RemoteCacheManagerFactory">  
 	    <argument value="172.30.51.53"/>      
@@ -58,7 +57,7 @@
     	<setHeader headerName="CamelInfinispanValue">
       		<simple>Sensor 1: ${body}</simple>
     	</setHeader>
-    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{env.CACHE_NAME}}&amp;sync=false"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{CACHE_NAME}}&amp;sync=false"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
     </route>
     
@@ -67,7 +66,7 @@
         <setHeader headerName="CamelInfinispanKey">
       		<constant>sensordata</constant>
     	</setHeader>
-    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{env.CACHE_NAME}}&amp;command=GET&amp;sync=false"/>
+    	<to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{CACHE_NAME}}&amp;command=GET&amp;sync=false"/>
     	<setBody>
 				<simple>${header.CamelInfinispanOperationResult}</simple>
 		</setBody>
