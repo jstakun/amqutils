@@ -28,7 +28,7 @@
              >
 
    <ext:property-placeholder>
-   		<ext:location>file:/etc/config/gateway.properties"</ext:location> 
+   		<ext:location>file:/etc/config/gateway.properties</ext:location> 
    </ext:property-placeholder>
 
    <!--cm:property-placeholder id="default.vars" persistent-id="com.redhat.waw.jstakun.gateway">
