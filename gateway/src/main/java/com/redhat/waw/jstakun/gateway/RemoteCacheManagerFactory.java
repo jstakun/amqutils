@@ -11,8 +11,7 @@ public class RemoteCacheManagerFactory {
         clientBuilder = new ConfigurationBuilder();
         clientBuilder.addServer()
             .host(hostname)
-            .port(port)
-            .forceReturnValues(true);
+            .port(port);
     }
     public RemoteCacheManager newRemoteCacheManager() {
     	System.out.println("Reading env vars...");
@@ -20,6 +19,6 @@ public class RemoteCacheManagerFactory {
     	for (Map.Entry<String, String> entry : env.entrySet()) {
     		System.out.println(entry.getKey() + ": " + entry.getValue());
     	}
-        return new RemoteCacheManager(clientBuilder.build());
+        return new RemoteCacheManager(clientBuilder.build(), true);
     }
 }

@@ -27,15 +27,21 @@ public class JDGHotRodClient {
 		RemoteCache<String, String> sensors = getRemoteCache(cache, host, port);
 		sensors.put("sensordata", "test");
 		
-		System.out.println("Received cache data: " + sensors.get("sensordata"));
-
+		for (int i = 0;i< 10;i++) {
+			try {
+				Thread.sleep(10000);
+				System.out.println("Received cache data: " + sensors.get("sensordata"));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	
 	public static RemoteCache<String, String> getRemoteCache(String cache, String host, int port) {
 		ConfigurationBuilder builder = new ConfigurationBuilder();
 		builder.addServer()
-			.host("172.30.51.53").port(11333);
+			.host(host).port(port);
 			//.security()
 	        //.authentication()
 	        //    .enable()
