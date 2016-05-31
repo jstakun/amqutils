@@ -27,13 +27,15 @@
              http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0 http://aries.apache.org/schemas/blueprint-ext/blueprint-ext.xsd"
              >
 
-   <!--ext:property-placeholder/-->
+   <ext:property-placeholder>
+   		<ext:location>file:/etc/config/gateway.properties"</ext:location> 
+   </ext:property-placeholder>
 
-   <cm:property-placeholder id="default.vars" persistent-id="com.redhat.waw.jstakun.gateway">
+   <!--cm:property-placeholder id="default.vars" persistent-id="com.redhat.waw.jstakun.gateway">
         <cm:default-properties>
             <cm:property name="CACHE_NAME" value="default"/>
         </cm:default-properties>
-   </cm:property-placeholder>
+   </cm:property-placeholder-->
   
    <bean id="remoteCacheManagerFactory" class="com.redhat.waw.jstakun.gateway.RemoteCacheManagerFactory">  
 	    <argument value="172.30.51.53"/>      
