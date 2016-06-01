@@ -25,6 +25,7 @@ public class JDGHotRodClient {
 		System.out.println("Host: " + host + ":" + port + ", cache: " + cache + " will be used.");
 		
 		RemoteCache<String, String> sensors = getRemoteCache(cache, host, port);
+		System.out.println("Putting sensordata to cache");
 		sensors.put("sensordata", "test");
 		
 		for (int i = 0;i< 10;i++) {
