@@ -1,6 +1,6 @@
 package com.redhat.waw.jstakun.jdg;
 
-import java.util.Map;
+import java.util.Set;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
@@ -31,11 +31,11 @@ public class JDGHotRodClient {
 		System.out.println("Putting entry " + key + " to cache " + cache);
 		sensors.put(key, "test");
 		
-		Map<String, String> allEntries = sensors.getBulk();
+		Set<String> allEntries = sensors.keySet();
 		
 		System.out.println("Found following entries in cache " + cache + ":");
-		for (String entry : allEntries.keySet()) {
-			System.out.println(entry + ": " + allEntries.get(entry));
+		for (String entry : allEntries) {
+			System.out.println(entry);
 		}
 		
 		/*for (int i = 0;i< 10;i++) {
