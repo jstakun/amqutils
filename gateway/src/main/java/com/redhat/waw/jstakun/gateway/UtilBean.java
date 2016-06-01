@@ -4,6 +4,6 @@ public class UtilBean {
 
 	
 	public String resolveSensorNameFromTopicName(String topicName) {
-		return topicName.substring(topicName.indexOf("/"));
+		return topicName.substring(topicName.indexOf("/")+1);
 	}
 }
