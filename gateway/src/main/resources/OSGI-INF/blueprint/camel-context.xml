@@ -70,7 +70,7 @@
         <convertBodyTo type="java.lang.String"/>
         <log message="Received sensor data from queue: ${body}" loggingLevel="INFO"/>
         <setHeader headerName="CamelInfinispanKey">
-      		<simple>${date.now}</simple>
+      		<simple>${date:now:yyyy-MM-dd'T'HH:mm:ss:SSS}</simple>
     	</setHeader>
     	<setHeader headerName="CamelInfinispanValue">
       		<simple>${body}</simple>
