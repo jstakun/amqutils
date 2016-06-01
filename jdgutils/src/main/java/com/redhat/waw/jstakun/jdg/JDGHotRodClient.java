@@ -1,5 +1,7 @@
 package com.redhat.waw.jstakun.jdg;
 
+import java.util.Map;
+
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
@@ -7,6 +9,7 @@ import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 public class JDGHotRodClient {
 
 	//java -cp "jdgutils-0.0.1-SNAPSHOT.jar:infinispan-client-hotrod-6.3.0.Final-redhat-5.jar:infinispan-commons-6.3.0.Final-redhat-5.jar:jboss-logging-3.1.4.GA-redhat-2.jar:commons-pool-1.6.jar:jboss-marshalling-1.4.10.Final-redhat-1.jar:jboss-marshalling-river-1.4.10.Final-redhat-1.jar" com.redhat.waw.jstakun.jdg.JDGHotRodClient
+	private static final String key = "testdata";
 	
 	public static void main(String[] args) {
 		
@@ -25,17 +28,23 @@ public class JDGHotRodClient {
 		System.out.println("Host: " + host + ":" + port + ", cache: " + cache + " will be used.");
 		
 		RemoteCache<String, String> sensors = getRemoteCache(cache, host, port);
-		System.out.println("Putting sensordata to cache");
-		sensors.put("sensordata", "test");
+		System.out.println("Putting " + key + " to cache " + cache);
+		sensors.put(key, "test");
 		
-		for (int i = 0;i< 10;i++) {
+		Map<String, String> allEntries = sensors.getBulk();
+		
+		for (String entry : allEntries.keySet()) {
+			System.out.println("Found following entry in cache: " + entry);
+		}
+		
+		/*for (int i = 0;i< 10;i++) {
 			try {
 				Thread.sleep(10000);
-				System.out.println("Received cache data: " + sensors.get("sensordata"));
+				System.out.println("Received cache data: " + sensors.get(key));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 	
