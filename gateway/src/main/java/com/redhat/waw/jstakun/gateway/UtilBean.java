@@ -15,4 +15,8 @@ public class UtilBean {
 			throw new Exception("Topic name can't be empty!");
 		}
 	}
+
+    public String getCurrentMillis() {
+    	return Long.toString(System.currentTimeMillis());
+    }
 }
