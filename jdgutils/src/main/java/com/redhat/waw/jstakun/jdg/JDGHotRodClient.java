@@ -33,8 +33,9 @@ public class JDGHotRodClient {
 		
 		Map<String, String> allEntries = sensors.getBulk();
 		
+		System.out.println("Found following entries in cache " + cache + ":");
 		for (String entry : allEntries.keySet()) {
-			System.out.println("Found following entry in cache: " + entry);
+			System.out.println(entry + ": " + allEntries.get(entry));
 		}
 		
 		/*for (int i = 0;i< 10;i++) {
