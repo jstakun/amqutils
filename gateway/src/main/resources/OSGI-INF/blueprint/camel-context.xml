@@ -76,7 +76,7 @@
       		<simple>${body}</simple>
     	</setHeader>
     	<setHeader headerName="CamelInfinispanCacheName">
-    		<simple>${header.CamelMQTTSubscribeTopic}</simple>
+    	    <method ref="utils" method="resolveSensorNameFromTopicName(${header.CamelMQTTSubscribeTopic})"/>
     	</setHeader>
     	<to uri="infinispan://?cacheContainer=#cacheManager&amp;sync=false"/>
     	<log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
