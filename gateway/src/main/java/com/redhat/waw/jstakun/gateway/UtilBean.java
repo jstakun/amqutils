@@ -3,7 +3,16 @@ package com.redhat.waw.jstakun.gateway;
 public class UtilBean {
 
 	
-	public String resolveSensorNameFromTopicName(String topicName) {
-		return topicName.substring(topicName.indexOf("/")+1);
+	public String resolveSensorNameFromTopicName(String topicName) throws Exception {
+		if (topicName != null) {
+			int pos = topicName.indexOf("/");
+			if (pos > 0 && pos < topicName.length()) {
+				return topicName.substring(topicName.indexOf("/")+1);
+			} else {
+				throw new Exception("Topic name must match pattern prefix/sensor_name!");
+			}
+		} else {
+			throw new Exception("Topic name can't be empty!");
+		}
 	}
 }
