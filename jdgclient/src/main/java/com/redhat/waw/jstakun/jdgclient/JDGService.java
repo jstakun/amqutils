@@ -1,6 +1,7 @@
 package com.redhat.waw.jstakun.jdgclient;
 
 import java.net.InetAddress;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.GET;
@@ -41,7 +42,20 @@ public class JDGService {
 	@GET
 	@Path("/sensor/{cache}/keys")
 	@Produces({"application/json"})
-	public Set<String> getCacheKeys(@PathParam("cache") String cache) {
+	public Set<String> getCacheKeys(@PathParam("cache") String cache) {	
+		RemoteCache<String, String> sensorCache = getRemoteCache(cache);
+		return sensorCache.keySet();
+	}
+	
+	@GET
+	@Path("/sensor/{cache}/data")
+	@Produces({"application/json"})
+	public Map<String, String> getCacheData(@PathParam("cache") String cache) {	
+		RemoteCache<String, String> sensorCache = getRemoteCache(cache);
+		return sensorCache.getBulk();
+	}
+
+	public static RemoteCache<String, String> getRemoteCache(String cache) {
 		String host = System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST");
 		if (host == null) {
 			host = "localhost";
@@ -53,13 +67,9 @@ public class JDGService {
 			
 		}
 		
-		System.out.println("Reading " + cache + " keys from " + host + ":" + port);
+		System.out.println("Reading " + cache + " data from " + host + ":" + port);
 		
-		RemoteCache<String, String> sensorCache = getRemoteCache(cache, host, port);
-		return sensorCache.keySet();
-	}
-
-	public static RemoteCache<String, String> getRemoteCache(String cache, String host, int port) {
+		
 		ConfigurationBuilder builder = new ConfigurationBuilder();
 		builder.addServer()
 			.host(host).port(port);
