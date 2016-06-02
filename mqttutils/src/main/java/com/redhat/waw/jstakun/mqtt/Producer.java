@@ -38,6 +38,9 @@ public class Producer {
 	        	message = r.nextInt(100) + "," + r.nextGaussian() + "," + r.nextFloat();
 	        	System.out.println(i + ". Sending message " + message + " to sensor.receiver/" + sensor);
 	        	connection.publish("sensor.receiver/" + sensor, message.getBytes(), QoS.AT_LEAST_ONCE, false);
+	        	if (i < 100) {
+	        		Thread.sleep(10000);
+	        	}
 	        }
 	        System.out.println("Done");
 	        
