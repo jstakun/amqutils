@@ -32,7 +32,8 @@ public class JDGService {
 	@GET
 	@Produces({"application/xml"})
 	public Response root() {
-	    return info();
+		getRemoteCache("sensor1", "172.30.51.53", 11333);
+		return info();
 	}
 
 	public static RemoteCache<String, String> getRemoteCache(String cache, String host, int port) {
