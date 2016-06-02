@@ -39,10 +39,23 @@ public class JDGService {
 	}
 	
 	@GET
-	@Path("/sensor/{cache}")
+	@Path("/sensor/{cache}/keys")
 	@Produces({"application/json"})
 	public Set<String> getCacheKeys(@PathParam("cache") String cache) {
-		RemoteCache<String, String> sensorCache = getRemoteCache(cache, System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST"), Integer.valueOf(System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_POST")));
+		String host = System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST");
+		if (host == null) {
+			host = "localhost";
+		}
+		int port = 11333;
+		try {
+			port = Integer.valueOf(System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_PORT"));
+		} catch (Exception e) {
+			
+		}
+		
+		System.out.println("Reading " + cache + " keys from " + host + ":" + port);
+		
+		RemoteCache<String, String> sensorCache = getRemoteCache(cache, host, port);
 		return sensorCache.keySet();
 	}
 
