@@ -1,5 +1,7 @@
 package com.redhat.waw.jstakun.mqtt;
 
+import java.util.Random;
+
 import org.fusesource.mqtt.client.BlockingConnection;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.QoS;
@@ -30,8 +32,13 @@ public class Producer {
 			BlockingConnection connection = mqtt.blockingConnection();
 	        connection.connect();
 
-	        System.out.println("Sending message " + message + " to sensor.receiver/" + sensor);
-	        connection.publish("sensor.receiver/" + sensor, message.getBytes(), QoS.AT_LEAST_ONCE, false);
+	        Random r = new Random();
+	        
+	        for (int i=1;i<=100;i++) {
+	        	message = r.nextInt(100) + "," + r.nextGaussian() + "," + r.nextFloat();
+	        	System.out.println(i + ". Sending message " + message + " to sensor.receiver/" + sensor);
+	        	connection.publish("sensor.receiver/" + sensor, message.getBytes(), QoS.AT_LEAST_ONCE, false);
+	        }
 	        System.out.println("Done");
 	        
 	        connection.disconnect();
