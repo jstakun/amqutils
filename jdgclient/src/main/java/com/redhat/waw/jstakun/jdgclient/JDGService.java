@@ -32,7 +32,7 @@ public class JDGService {
 	@GET
 	@Produces({"application/xml"})
 	public Response root() {
-		getRemoteCache("sensor1", "172.30.51.53", 11333);
+		getRemoteCache("sensor1", System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST"), Integer.valueOf(System.getenv(System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_POST"))));
 		return info();
 	}
 
