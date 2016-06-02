@@ -1,8 +1,11 @@
 package com.redhat.waw.jstakun.jdgclient;
 
 import java.net.InetAddress;
+import java.util.Set;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
@@ -32,8 +35,15 @@ public class JDGService {
 	@GET
 	@Produces({"application/xml"})
 	public Response root() {
-		getRemoteCache("sensor1", System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST"), Integer.valueOf(System.getenv(System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_POST"))));
 		return info();
+	}
+	
+	@GET
+	@Path("/sensor/{cache}")
+	@Produces({"application/json"})
+	public Set<String> getCacheKeys(@PathParam("cache") String cache) {
+		RemoteCache<String, String> sensorCache = getRemoteCache(cache, System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST"), Integer.valueOf(System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_POST")));
+		return sensorCache.keySet();
 	}
 
 	public static RemoteCache<String, String> getRemoteCache(String cache, String host, int port) {
