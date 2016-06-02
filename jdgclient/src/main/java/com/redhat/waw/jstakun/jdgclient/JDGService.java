@@ -10,6 +10,7 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 
+@Path("/")
 public class JDGService {
 
 	private static final String VERSION = "1.0.0";
