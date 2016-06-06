@@ -94,11 +94,11 @@
       </exclusions>
     </dependency>
 
-    <dependency>
+    <!--dependency>
     	<groupId>com.redhat.waw.jboss</groupId>
     	<artifactId>cdm</artifactId>
     	<version>0.0.4.3</version>
-    </dependency>
+    </dependency-->
   </dependencies>
 
   <build>
@@ -239,7 +239,6 @@
             <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
-            <bundle>mvn:com.redhat.waw.jboss/cdm/0.0.4.3</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
         </configuration>
