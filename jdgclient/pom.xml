@@ -61,6 +61,11 @@
 			<artifactId>jboss-jaxb-api_2.2_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.redhat.waw.jboss</groupId>
+			<artifactId>cdm</artifactId>
+			<version>0.0.4.3</version>
+		</dependency>
   </dependencies>
   
   <build>

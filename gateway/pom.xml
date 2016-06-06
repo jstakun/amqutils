@@ -93,7 +93,12 @@
         </exclusion>
       </exclusions>
     </dependency>
-    
+
+    <dependency>
+    	<groupId>com.redhat.waw.jboss</groupId>
+    	<artifactId>cdm</artifactId>
+    	<version>0.0.4.3</version>
+    </dependency>
   </dependencies>
 
   <build>

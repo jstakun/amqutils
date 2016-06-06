@@ -3,6 +3,8 @@ package com.redhat.waw.jstakun.gateway;
 import org.apache.camel.Converter;
 import org.apache.camel.Exchange;
 
+import com.redhat.waw.iot.model.SensorData;
+
 @Converter
 public class SensorConverter {
 	
