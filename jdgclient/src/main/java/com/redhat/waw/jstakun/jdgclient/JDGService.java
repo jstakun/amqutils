@@ -43,19 +43,19 @@ public class JDGService {
 	@Path("/sensor/{cache}/keys")
 	@Produces({"application/json"})
 	public Set<String> getCacheKeys(@PathParam("cache") String cache) {	
-		RemoteCache<String, String> sensorCache = getRemoteCache(cache);
+		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
 		return sensorCache.keySet();
 	}
 	
 	@GET
 	@Path("/sensor/{cache}/data")
 	@Produces({"application/json"})
-	public Map<String, String> getCacheData(@PathParam("cache") String cache) {	
-		RemoteCache<String, String> sensorCache = getRemoteCache(cache);
+	public Map<String, Object> getCacheData(@PathParam("cache") String cache) {	
+		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
 		return sensorCache.getBulk();
 	}
 
-	public static RemoteCache<String, String> getRemoteCache(String cache) {
+	public static RemoteCache<String, Object> getRemoteCache(String cache) {
 		String host = System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST");
 		if (host == null) {
 			host = "localhost";

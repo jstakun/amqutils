@@ -27,7 +27,7 @@ public class JDGHotRodClient {
 		} 
 		System.out.println("Host: " + host + ":" + port + ", cache: " + cache + " will be used.");
 		
-		RemoteCache<String, String> sensors = getRemoteCache(cache, host, port);
+		RemoteCache<String, Object> sensors = getRemoteCache(cache, host, port);
 		System.out.println("Putting entry " + key + " to cache " + cache);
 		sensors.put(key, "test");
 		
@@ -49,7 +49,7 @@ public class JDGHotRodClient {
 	}
 
 	
-	public static RemoteCache<String, String> getRemoteCache(String cache, String host, int port) {
+	public static RemoteCache<String, Object> getRemoteCache(String cache, String host, int port) {
 		ConfigurationBuilder builder = new ConfigurationBuilder();
 		builder.addServer()
 			.host(host).port(port);
