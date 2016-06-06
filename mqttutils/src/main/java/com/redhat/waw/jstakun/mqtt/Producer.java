@@ -12,7 +12,7 @@ public class Producer {
 	
 	private static String sensor = "sensor1";
 	private static String message = "Default message";
-	
+	private static Random r = new Random();
 	
 	public static void main(String[] args) {
 		MQTT mqtt = new MQTT();
@@ -32,8 +32,6 @@ public class Producer {
 			BlockingConnection connection = mqtt.blockingConnection();
 	        connection.connect();
 
-	        Random r = new Random();
-	        
 	        for (int i=1;i<=100;i++) {
 	        	message = r.nextInt(100) + "," + r.nextGaussian() + "," + r.nextFloat();
 	        	System.out.println(i + ". Sending message " + message + " to sensor.receiver/" + sensor);
