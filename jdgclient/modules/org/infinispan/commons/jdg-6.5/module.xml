@@ -13,5 +13,6 @@
         <module name="org.jboss.marshalling" slot="jdg-6.5"/>
         <module name="org.jboss.marshalling.river" services="import" slot="jdg-6.5" />
         <module name="sun.jdk"/>
+        <module name="com.redhat.waw.jboss"/>
     </dependencies>
 </module>
