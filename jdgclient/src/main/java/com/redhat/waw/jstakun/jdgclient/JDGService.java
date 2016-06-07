@@ -53,7 +53,7 @@ public class JDGService {
 	@GET
 	@Path("/sensor/{cache}/data")
 	@Produces({"application/json"})
-	public Map<String, SensorData> getCacheData(@PathParam("cache") String cache) {	
+	public Map<String, Object> getCacheData(@PathParam("cache") String cache) {	
 		return getRemoteCache(cache).getBulk();
 	}
 	
@@ -61,12 +61,12 @@ public class JDGService {
 	@Path("/sensor/{cache}/avg/a")
 	@Produces({"application/json"})
 	public Double getCacheAvgA(@PathParam("cache") String cache) {	
-		RemoteCache<String, SensorData> sensorCache = getRemoteCache(cache);
-		Map<String, SensorData> data = sensorCache.getBulk();
+		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
+		Map<String, Object> data = sensorCache.getBulk();
 		int sum = 0;
 		int count = 0;
 		for (String key : data.keySet()) {
-			SensorData value = data.get(key);
+			SensorData value = (SensorData)data.get(key);
 			sum += value.getA();
 			count++;			
 		}
@@ -78,7 +78,7 @@ public class JDGService {
 		}
 	}
 
-	private static RemoteCache<String, SensorData> getRemoteCache(String cache) {
+	private static RemoteCache<String, Object> getRemoteCache(String cache) {
 		if (rcm == null) {
 			
 			System.out.println("Creating RemoteCacheManager instance...");
