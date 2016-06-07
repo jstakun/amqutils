@@ -54,21 +54,25 @@ public class JDGService {
 	@Path("/sensor/{cache}/data")
 	@Produces({"application/json"})
 	public Map<String, Object> getCacheData(@PathParam("cache") String cache) {	
-		return getRemoteCache(cache).getBulk();
+		return getBulk(cache);
 	}
 	
 	@GET
 	@Path("/sensor/{cache}/avg/a")
 	@Produces({"application/json"})
 	public Double getCacheAvgA(@PathParam("cache") String cache) {	
-		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
-		Map<String, Object> data = sensorCache.getBulk();
+		Map<String, Object> data = getBulk(cache);
 		int sum = 0;
 		int count = 0;
 		for (String key : data.keySet()) {
-			SensorData value = (SensorData)data.get(key);
-			sum += value.getA();
-			count++;			
+			Object o = data.get(key);
+			if (o instanceof SensorData) {
+				SensorData value = (SensorData)o;
+				sum += value.getA();
+				count++;			
+			} else {
+				System.out.println("Can't cast from " + o.getClass().getName() + " to " + SensorData.class.getName());
+			}
 		}
 		
 		if (count == 0) {
@@ -76,6 +80,10 @@ public class JDGService {
 		} else {
 			return sum/(double)count;
 		}
+	}
+	
+	private static Map<String, Object> getBulk(String cache) {
+		return getRemoteCache(cache).getBulk();
 	}
 
 	private static RemoteCache<String, Object> getRemoteCache(String cache) {
@@ -95,7 +103,7 @@ public class JDGService {
 			}
 			
 			ConfigurationBuilder builder = new ConfigurationBuilder();
-			builder.addServer()
+				builder.addServer()
 				.host(host).port(port);
 			//.security()
 	        //.authentication()
