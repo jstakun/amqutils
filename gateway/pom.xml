@@ -7,8 +7,8 @@
   <artifactId>gateway</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: Quickstarts :: Karaf :: Camel and ActiveMQ</name>
-  <description>Camel route using ActiveMQ in Karaf container</description>
+  <name>Sensor IoT Gateway</name>
+  <description>Sample sensor iot gateway</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -94,11 +94,13 @@
       </exclusions>
     </dependency>
 
-    <!--dependency>
+    <dependency>
     	<groupId>com.redhat.waw.jboss</groupId>
-    	<artifactId>cdm</artifactId>
+    	<artifactId>cdm-osgi</artifactId>
     	<version>0.0.4.3</version>
-    </dependency-->
+    	<classifier>features</classifier>
+    	<type>xml</type>
+    </dependency>
   </dependencies>
 
   <build>
@@ -234,6 +236,7 @@
             <feature>camel-blueprint</feature>
             <feature>camel-mqtt</feature>
             <feature>camel-jbossdatagrid</feature>
+            <feature>cdm-osgi</feature>
          </startupFeatures>
          <startupBundles>
             <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
