@@ -22,7 +22,13 @@ public class SensorConverter {
 		sd.setSensorId(sensorId);
 		
 		String dataStr = new String(data);
-		//TODO parse data string
+		String[] tokens = dataStr.split(",");
+		
+		if (tokens.length == 3) {
+			sd.setA(Integer.valueOf(tokens[0]));
+			sd.setC(Double.valueOf(tokens[1]));
+			sd.setB(Float.valueOf(tokens[2]));
+		}
 		
 		sd.setTimestamp(System.currentTimeMillis());
 		
