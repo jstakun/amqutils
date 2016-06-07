@@ -47,34 +47,28 @@ public class JDGService {
 	@Path("/sensor/{cache}/keys")
 	@Produces({"application/json"})
 	public Set<String> getCacheKeys(@PathParam("cache") String cache) {	
-		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
-		return sensorCache.keySet();
+		return getRemoteCache(cache).keySet();
 	}
 	
 	@GET
 	@Path("/sensor/{cache}/data")
 	@Produces({"application/json"})
-	public Map<String, Object> getCacheData(@PathParam("cache") String cache) {	
-		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
-		return sensorCache.getBulk();
+	public Map<String, SensorData> getCacheData(@PathParam("cache") String cache) {	
+		return getRemoteCache(cache).getBulk();
 	}
 	
 	@GET
 	@Path("/sensor/{cache}/avg/a")
 	@Produces({"application/json"})
 	public Double getCacheAvgA(@PathParam("cache") String cache) {	
-		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
-		Map<String, Object> data = sensorCache.getBulk();
+		RemoteCache<String, SensorData> sensorCache = getRemoteCache(cache);
+		Map<String, SensorData> data = sensorCache.getBulk();
 		int sum = 0;
 		int count = 0;
 		for (String key : data.keySet()) {
-			Object value = data.get(key);
-			if (value instanceof SensorData) {
-				sum += ((SensorData)value).getA();
-				count++;
-			} else {
-				System.out.println("Entry with key " + key + " is instanceof " + value.getClass().getName());
-			}
+			SensorData value = data.get(key);
+			sum += value.getA();
+			count++;			
 		}
 		
 		if (count == 0) {
@@ -84,7 +78,7 @@ public class JDGService {
 		}
 	}
 
-	private static RemoteCache<String, Object> getRemoteCache(String cache) {
+	private static RemoteCache<String, SensorData> getRemoteCache(String cache) {
 		if (rcm == null) {
 			
 			System.out.println("Creating RemoteCacheManager instance...");
