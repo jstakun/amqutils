@@ -6,6 +6,7 @@
             <module name="org.infinispan.client.hotrod" slot="jdg-6.5" services="export"/>
             <module name="org.infinispan.query.remote.client" slot="jdg-6.5" services="export"/>
             <module name="org.infinispan.protostream" slot="jdg-6.5" services="export"/>
+            <module name="com.redhat.waw.jboss" slot="main" services="export"/>           
         </dependencies>
     </deployment>
 </jboss-deployment-structure>
