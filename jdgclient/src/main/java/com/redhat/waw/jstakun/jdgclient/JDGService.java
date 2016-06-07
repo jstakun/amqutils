@@ -14,10 +14,14 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 
+import com.redhat.waw.iot.model.SensorData;
+
 @Path("/")
 public class JDGService {
 
 	private static final String VERSION = "1.0.0";
+	
+	private static RemoteCacheManager rcm;
 	
 	@GET
 	@Path("/info")
@@ -54,31 +58,56 @@ public class JDGService {
 		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
 		return sensorCache.getBulk();
 	}
+	
+	@GET
+	@Path("/sensor/{cache}/avg/a")
+	@Produces({"application/json"})
+	public Double getCacheAvgA(@PathParam("cache") String cache) {	
+		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
+		Map<String, Object> data = sensorCache.getBulk();
+		int avg = 0;
+		int count = 0;
+		for (String key : data.keySet()) {
+			Object value = data.get(key);
+			if (value instanceof SensorData) {
+				avg += ((SensorData)value).getA();
+				count++;
+			}
+		}
+		
+		return avg/(double)count;
+	}
 
-	public static RemoteCache<String, Object> getRemoteCache(String cache) {
-		String host = System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST");
-		if (host == null) {
-			host = "localhost";
-		}
-		int port = 11333;
-		try {
-			port = Integer.valueOf(System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_PORT"));
-		} catch (Exception e) {
+	private static RemoteCache<String, Object> getRemoteCache(String cache) {
+		if (rcm == null) {
 			
-		}
-		
-		System.out.println("Reading " + cache + " data from " + host + ":" + port);
-		
-		
-		ConfigurationBuilder builder = new ConfigurationBuilder();
-		builder.addServer()
-			.host(host).port(port);
+			System.out.println("Creating RemoteCacheManager instance...");
+			
+			String host = System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST");
+			if (host == null) {
+				host = "localhost";
+			}
+			int port = 11333;
+			try {
+				port = Integer.valueOf(System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_PORT"));
+			} catch (Exception e) {
+				
+			}
+			
+			ConfigurationBuilder builder = new ConfigurationBuilder();
+			builder.addServer()
+				.host(host).port(port);
 			//.security()
 	        //.authentication()
 	        //    .enable()
 	        //    .serverName("tasks")
 	        //    .saslMechanism("DIGEST-MD5")
 	        //    .callbackHandler(new LoginHandler("admin", "manager1".toCharArray(), "ApplicationRealm"));
-		return new RemoteCacheManager(builder.build(), true).getCache(cache);
+			rcm = new RemoteCacheManager(builder.build(), true); 		
+		}
+		
+		System.out.println("Reading " + cache + " data...");
+		
+		return rcm.getCache(cache);
 	}
 }
