@@ -72,6 +72,8 @@ public class JDGService {
 			if (value instanceof SensorData) {
 				sum += ((SensorData)value).getA();
 				count++;
+			} else {
+				System.out.println("Entry with key " + key + " is instanceof " + value.getClass().getName());
 			}
 		}
 		
