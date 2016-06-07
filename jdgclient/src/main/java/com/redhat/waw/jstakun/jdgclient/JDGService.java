@@ -65,17 +65,21 @@ public class JDGService {
 	public Double getCacheAvgA(@PathParam("cache") String cache) {	
 		RemoteCache<String, Object> sensorCache = getRemoteCache(cache);
 		Map<String, Object> data = sensorCache.getBulk();
-		int avg = 0;
+		int sum = 0;
 		int count = 0;
 		for (String key : data.keySet()) {
 			Object value = data.get(key);
 			if (value instanceof SensorData) {
-				avg += ((SensorData)value).getA();
+				sum += ((SensorData)value).getA();
 				count++;
 			}
 		}
 		
-		return avg/(double)count;
+		if (count == 0) {
+			return (double)count;
+		} else {
+			return sum/(double)count;
+		}
 	}
 
 	private static RemoteCache<String, Object> getRemoteCache(String cache) {
