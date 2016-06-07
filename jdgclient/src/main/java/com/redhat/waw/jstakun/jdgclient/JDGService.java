@@ -15,6 +15,7 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 
 import com.redhat.waw.iot.model.SensorData;
+import com.redhat.waw.ose.model.Decision;
 
 @Path("/")
 public class JDGService {
@@ -60,7 +61,7 @@ public class JDGService {
 	@GET
 	@Path("/sensor/{cache}/avg/a")
 	@Produces({"application/json"})
-	public Double getCacheAvgA(@PathParam("cache") String cache) {	
+	public Decision getCacheAvgA(@PathParam("cache") String cache) {	
 		Map<String, Object> data = getBulk(cache);
 		int sum = 0;
 		int count = 0;
@@ -75,11 +76,16 @@ public class JDGService {
 			}
 		}
 		
-		if (count == 0) {
-			return (double)count;
-		} else {
-			return sum/(double)count;
+		Decision d = new Decision();
+		d.setId("avg-a");
+		
+		double avg = 0;
+		if (count > 0) {
+			avg = sum/(double)count;
 		}
+		d.setValue(Double.toString(avg));
+		
+		return d;
 	}
 	
 	private static Map<String, Object> getBulk(String cache) {
