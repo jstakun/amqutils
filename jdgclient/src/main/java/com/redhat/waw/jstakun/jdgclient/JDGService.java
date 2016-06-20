@@ -73,6 +73,14 @@ public class JDGService {
 	}
 	
 	@GET
+	@Path("/sensor/{cache}/clear")
+	@Produces({"application/json"})
+	public Response clearCache(@PathParam("cache") String cache) {
+		getRemoteCache(cache).clear();
+		return Response.status(200).entity("{\"status\": \"ok\"}").build();	
+	}
+	
+	@GET
 	@Path("/rain/prague")
 	@Produces({"application/json"})
 	public Decision getRainProbabilty() {

@@ -32,6 +32,9 @@ public class Producer {
 			BlockingConnection connection = mqtt.blockingConnection();
 	        connection.connect();
 
+	        //message = "blink"; //off, on
+	        //connection.publish("iotdemocommand/light", message.getBytes(), QoS.AT_LEAST_ONCE, false);
+	        
 	        for (int i=1;i<=100;i++) {
 	        	message = r.nextInt(100) + "," + r.nextGaussian() + "," + r.nextFloat();
 	        	System.out.println(i + ". Sending message " + message + " to sensor.receiver/" + sensor);
