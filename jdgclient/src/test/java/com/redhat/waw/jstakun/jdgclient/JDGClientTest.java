@@ -8,9 +8,9 @@ public class JDGClientTest {
 
 	@Test
 	public void testWeather() {
-		//int weather = JDGService.getCurrentPressure();
-		//assertNotNull("Weather is null!", weather);
-		//System.out.println(weather);
+		int weather = JDGService.getCurrentPressure();
+		assertNotNull("Weather is null!", weather);
+		System.out.println(weather);
 	}
 
 }
