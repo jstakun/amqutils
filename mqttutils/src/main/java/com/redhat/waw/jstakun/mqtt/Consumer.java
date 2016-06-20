@@ -23,7 +23,7 @@ public class Consumer {
 			BlockingConnection connection = mqtt.blockingConnection();
 	        connection.connect();
 
-	        Topic[] topics = {new Topic(utf8("sensor/receiver.13556381"), QoS.AT_LEAST_ONCE)};
+	        Topic[] topics = {new Topic(utf8("sensor.receiver/13556381"), QoS.AT_LEAST_ONCE)};
 	        byte[] qoses = connection.subscribe(topics);
 	        
 	        System.out.println("Connection subscription status: " + new String(qoses));

@@ -1,13 +1,20 @@
 package com.redhat.waw.jstakun.jdgclient;
 
+import java.io.StringReader;
 import java.net.InetAddress;
 import java.util.Map;
 import java.util.Set;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.infinispan.client.hotrod.RemoteCache;
@@ -63,6 +70,32 @@ public class JDGService {
 	@Produces({"application/json"})
 	public Decision getCacheAvg(@PathParam("cache") String cache, @PathParam("type") String type) {
 		return getSensorAvg(getBulk(cache), type);
+	}
+	
+	@GET
+	@Path("/rain/prague")
+	@Produces({"application/json"})
+	public Decision getRainProbabilty() {
+		Map<String, Object> data = getBulk("13556381");
+		int probability = 0;
+		double humidityAvg = Double.valueOf(getSensorAvg(data, "c").getValue()).doubleValue(); 
+		if (humidityAvg > 50) {
+			probability += (humidityAvg - 50);
+		}
+		int pressure = getCurrentPressure();
+		if (pressure > 0 && pressure < 1000) {
+			probability += (1000 - pressure);
+		}
+		if (probability > 100) {
+			probability = 100;
+		}
+		
+		Decision d = new Decision();
+		
+		d.setId("Prague rain probability");
+		d.setValue(Integer.toString(probability));
+		
+		return d;
 	}
 
 	private static Map<String, Object> getBulk(String cache) {
@@ -133,4 +166,27 @@ public class JDGService {
 		
 		return d;
 	}
+	
+	public static int getCurrentPressure() {
+		try {
+			Client client = ClientBuilder.newClient();
+			String weather = client.target("http://api.openweathermap.org/data/2.5/weather?q=Prag,cz&APPID=ea915ccfec3c2dd13466103568649663&units=metric")
+		        .request(MediaType.APPLICATION_JSON)
+		        .get(String.class);
+		
+			JsonReader jsonReader = Json.createReader(new StringReader(weather));
+		
+			JsonObject root = jsonReader.readObject();
+		
+			jsonReader.close();
+		
+			JsonObject main = root.getJsonObject("main");
+		
+			return main.getInt("pressure");
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+	
+	
 }
