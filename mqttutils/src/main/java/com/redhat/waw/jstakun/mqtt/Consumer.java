@@ -16,13 +16,14 @@ public class Consumer {
 		MQTT mqtt = new MQTT();
 		
 		try {
-			mqtt.setHost("172.30.214.17", 1883);
+			//mqtt.setHost("172.30.214.17", 1883);
+			mqtt.setHost("master.osecloud.com", 31883);
 			mqtt.setUserName("admin");
 			mqtt.setPassword("manager1");
 			BlockingConnection connection = mqtt.blockingConnection();
 	        connection.connect();
 
-	        Topic[] topics = {new Topic(utf8("sensor.receiver"), QoS.AT_LEAST_ONCE)};
+	        Topic[] topics = {new Topic(utf8("sensor/receiver.13556381"), QoS.AT_LEAST_ONCE)};
 	        byte[] qoses = connection.subscribe(topics);
 	        
 	        System.out.println("Connection subscription status: " + new String(qoses));

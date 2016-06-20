@@ -8,6 +8,11 @@ import com.redhat.waw.iot.model.SensorData;
 @Converter
 public class SensorConverter {
 	
+	/*Sending temperature value in Celsius <26, 1>
+	  Sending humidity value <52, 1>
+	  Sending sensor voltage <50, 1>
+	  Sending sensor aggregated data <26,52,50>*/
+	
 	private static UtilBean ub = new UtilBean();
 	
 	@Converter
@@ -25,9 +30,9 @@ public class SensorConverter {
 		String[] tokens = dataStr.split(",");
 		
 		if (tokens.length == 3) {
-			sd.setA(Integer.valueOf(tokens[0]));
-			sd.setC(Double.valueOf(tokens[1]));
-			sd.setB(Float.valueOf(tokens[2]));
+			sd.setA(Integer.valueOf(tokens[2]));
+			sd.setC(Double.valueOf(tokens[0]));
+			sd.setB(Float.valueOf(tokens[1]));
 		}
 		
 		sd.setTimestamp(System.currentTimeMillis());

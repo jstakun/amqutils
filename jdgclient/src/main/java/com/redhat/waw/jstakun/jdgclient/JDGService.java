@@ -59,35 +59,12 @@ public class JDGService {
 	}
 	
 	@GET
-	@Path("/sensor/{cache}/avg/a")
+	@Path("/sensor/{cache}/avg/{type}")
 	@Produces({"application/json"})
-	public Decision getCacheAvgA(@PathParam("cache") String cache) {	
-		Map<String, Object> data = getBulk(cache);
-		int sum = 0;
-		int count = 0;
-		for (String key : data.keySet()) {
-			Object o = data.get(key);
-			if (o instanceof SensorData) {
-				SensorData value = (SensorData)o;
-				sum += value.getA();
-				count++;			
-			} else {
-				System.out.println("Can't cast from " + o.getClass().getName() + " to " + SensorData.class.getName());
-			}
-		}
-		
-		Decision d = new Decision();
-		d.setId("avg-a");
-		
-		double avg = 0;
-		if (count > 0) {
-			avg = sum/(double)count;
-		}
-		d.setValue(Double.toString(avg));
-		
-		return d;
+	public Decision getCacheAvg(@PathParam("cache") String cache, @PathParam("type") String type) {
+		return getSensorAvg(getBulk(cache), type);
 	}
-	
+
 	private static Map<String, Object> getBulk(String cache) {
 		return getRemoteCache(cache).getBulk();
 	}
@@ -123,5 +100,37 @@ public class JDGService {
 		System.out.println("Reading " + cache + " data...");
 		
 		return rcm.getCache(cache);
+	}
+	
+	private static Decision getSensorAvg(Map<String, Object> data, String sensor) {	
+		double sum = 0;
+		int count = 0;
+		for (String key : data.keySet()) {
+			Object o = data.get(key);
+			if (o instanceof SensorData) {
+				SensorData value = (SensorData)o;
+				if (sensor.equals("a")) {
+					sum += value.getA();
+				} else if (sensor.equals("b")) {
+					sum += value.getB();
+				} else if (sensor.equals("c")) {
+					sum += value.getC();
+				}
+				count++;			
+			} else {
+				System.out.println("Can't cast from " + o.getClass().getName() + " to " + SensorData.class.getName());
+			}
+		}
+		
+		Decision d = new Decision();
+		d.setId("avg-a");
+		
+		double avg = 0;
+		if (count > 0) {
+			avg = sum/count;
+		}
+		d.setValue(Double.toString(avg));
+		
+		return d;
 	}
 }
