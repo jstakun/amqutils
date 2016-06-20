@@ -92,7 +92,7 @@ public class JDGService {
 		
 		Decision d = new Decision();
 		
-		d.setId("Prague rain probability");
+		d.setId("Prague rain probability %");
 		d.setValue(Integer.toString(probability));
 		
 		return d;
@@ -138,16 +138,20 @@ public class JDGService {
 	private static Decision getSensorAvg(Map<String, Object> data, String sensor) {	
 		double sum = 0;
 		int count = 0;
+		String id = "unknown";
 		for (String key : data.keySet()) {
 			Object o = data.get(key);
 			if (o instanceof SensorData) {
 				SensorData value = (SensorData)o;
 				if (sensor.equals("a")) {
 					sum += value.getA();
+					id = "temperature";
 				} else if (sensor.equals("b")) {
 					sum += value.getB();
+					id = "voltage";
 				} else if (sensor.equals("c")) {
 					sum += value.getC();
+					id = "humidity";
 				}
 				count++;			
 			} else {
@@ -156,7 +160,7 @@ public class JDGService {
 		}
 		
 		Decision d = new Decision();
-		d.setId("avg-a");
+		d.setId(id);
 		
 		double avg = 0;
 		if (count > 0) {
