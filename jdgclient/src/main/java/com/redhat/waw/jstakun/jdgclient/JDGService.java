@@ -87,7 +87,7 @@ public class JDGService {
 		Map<String, Object> data = getBulk("13556381");
 		int probability = 0;
 		double humidityAvg = Double.valueOf(getSensorAvg(data, "c").getValue()).doubleValue(); 
-		if (humidityAvg > 50) {
+		if (humidityAvg >= 50 && humidityAvg <= 100) {
 			probability += (humidityAvg - 50);
 		}
 		int pressure = getCurrentPressure();
