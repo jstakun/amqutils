@@ -8,7 +8,7 @@ public class JDGClientTest {
 
 	@Test
 	public void testWeather() {
-		int weather = JDGService.getCurrentPressure();
+		int weather = JDGService.getCurrentPressure("Prag,cz");
 		assertNotNull("Weather is null!", weather);
 		System.out.println(weather);
 	}

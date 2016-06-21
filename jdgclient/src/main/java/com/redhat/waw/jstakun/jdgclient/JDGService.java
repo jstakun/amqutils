@@ -31,6 +31,8 @@ public class JDGService {
 	
 	private static RemoteCacheManager rcm;
 	
+	//sensors endpoints
+	
 	@GET
 	@Path("/info")
 	@Produces({"application/xml"})
@@ -80,6 +82,8 @@ public class JDGService {
 		return Response.status(200).entity("{\"status\": \"ok\"}").build();	
 	}
 	
+	//prague endpoints
+	
 	@GET
 	@Path("/rain/prague")
 	@Produces({"application/json"})
@@ -90,7 +94,7 @@ public class JDGService {
 		if (humidityAvg >= 50 && humidityAvg <= 100) {
 			probability += (humidityAvg - 50);
 		}
-		int pressure = getCurrentPressure();
+		int pressure = getCurrentPressure("Prag,cz");
 		if (pressure > 0 && pressure < 1000) {
 			probability += (1000 - pressure);
 		}
@@ -105,7 +109,21 @@ public class JDGService {
 		
 		return d;
 	}
-
+	
+	@GET
+	@Path("/pressure/prague")
+	@Produces({"application/json"})
+	public Decision getPressure() {
+		Decision d = new Decision();
+		
+		d.setId("Prague current pressure");
+		d.setValue(Integer.toString(getCurrentPressure("Prag,cz")));
+		
+		return d;
+	}
+	
+	//utils
+	
 	private static Map<String, Object> getBulk(String cache) {
 		return getRemoteCache(cache).getBulk();
 	}
@@ -179,10 +197,10 @@ public class JDGService {
 		return d;
 	}
 	
-	public static int getCurrentPressure() {
+	public static int getCurrentPressure(String location) {
 		try {
 			Client client = ClientBuilder.newClient();
-			String weather = client.target("http://api.openweathermap.org/data/2.5/weather?q=Prag,cz&APPID=ea915ccfec3c2dd13466103568649663&units=metric")
+			String weather = client.target("http://api.openweathermap.org/data/2.5/weather?q=" + location + "&APPID=ea915ccfec3c2dd13466103568649663&units=metric")
 		        .request(MediaType.APPLICATION_JSON)
 		        .get(String.class);
 		
