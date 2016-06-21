@@ -7,7 +7,7 @@ public class UtilBean {
 		if (topicName != null) {
 			int pos = topicName.indexOf("/");
 			if (pos > 0 && pos < topicName.length()) {
-				return topicName.substring(topicName.indexOf("/")+1);
+				return "S" + topicName.substring(topicName.indexOf("/")+1);
 			} else {
 				throw new Exception("Topic name must match pattern prefix/sensor_name!");
 			}

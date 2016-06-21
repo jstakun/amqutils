@@ -156,9 +156,9 @@ public class JDGService {
 			rcm = new RemoteCacheManager(builder.build(), true); 		
 		}
 		
-		System.out.println("Reading " + cache + " data...");
+		System.out.println("Reading S" + cache + " data...");
 		
-		return rcm.getCache(cache);
+		return rcm.getCache("S" + cache);
 	}
 	
 	private static Decision getSensorAvg(Map<String, Object> data, String sensor) {	
