@@ -90,6 +90,15 @@
   <route id="iot-gateway-sensors">
     <from uri="mqtt:mqtt.sensor.receiver?host=tcp://172.30.214.17:1883&amp;subscribeTopicNames=sensor.receiver/#&amp;userName=admin&amp;password=manager1"/>
     <convertBodyTo type="com.redhat.waw.iot.model.SensorData"/>
+    <validate>
+      <simple>${body.a} &gt; 0 &amp;&amp; ${body.a} &lt; 101</simple>
+    </validate>
+    <validate>
+      <simple>${body.b} &gt; 0 &amp;&amp; ${body.b} &lt; 10001</simple>
+    </validate>
+    <validate>
+      <simple>${body.c} &gt; 0 &amp;&amp; ${body.c} &lt; 101</simple>
+    </validate>
     <log message="Received sensor data from queue: ${body}" loggingLevel="INFO"/>
     <setHeader headerName="CamelInfinispanKey">
       <method ref="utils" method="getCurrentMillis"></method>

@@ -193,9 +193,14 @@ public class JDGService {
 			jsonReader.close();
 		
 			JsonObject main = root.getJsonObject("main");
+			
+			int pressure = main.getInt("pressure");
+			
+			System.out.println("Received current Prague pressure: " + pressure);
 		
-			return main.getInt("pressure");
+			return pressure;
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return -1;
 		}
 	}

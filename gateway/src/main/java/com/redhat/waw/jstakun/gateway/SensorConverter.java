@@ -30,9 +30,9 @@ public class SensorConverter {
 		String[] tokens = dataStr.split(",");
 		
 		if (tokens.length == 3) {
-			sd.setA(Integer.valueOf(tokens[2]));
-			sd.setC(Double.valueOf(tokens[0]));
+			sd.setA(Integer.valueOf(tokens[0]));
 			sd.setB(Float.valueOf(tokens[1]));
+			sd.setC(Double.valueOf(tokens[2]));
 		}
 		
 		sd.setTimestamp(System.currentTimeMillis());
