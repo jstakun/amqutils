@@ -27,24 +27,24 @@
              http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0 http://aries.apache.org/schemas/blueprint-ext/blueprint-ext.xsd"
              >
 
-   <ext:property-placeholder>
-   		<ext:location>file:/etc/config/gateway.properties</ext:location> 
-   </ext:property-placeholder>
-
-   <cm:property-placeholder id="default.vars" persistent-id="com.redhat.waw.jstakun.gateway">
+   <!--cm:property-placeholder id="default.vars" persistent-id="com.redhat.waw.jstakun.gateway">
         <cm:default-properties>
             <cm:property name="HOTROD_HOST" value="172.30.51.53"/>
             <cm:property name="HOTROD_PORT" value="11333"/>
             <cm:property name="HOTROD_LIFESPAN" value="10"/>
-            <cm:property name="CACHE_NAME" value="default"/>
+            <cm:property name="DEFAULT_CACHE_NAME" value="default"/>
             <cm:property name="MQTT_HOST" value="172.30.214.17"/>
             <cm:property name="MQTT_PORT" value="1883"/>
             <cm:property name="MQTT_USERNAME" value="admin"/>
             <cm:property name="MQTT_PASSWORD" value="manager1"/>
             <cm:property name="MQTT_PREFIX" value="sensor.receiver"/>
         </cm:default-properties>
-   </cm:property-placeholder>
-  
+   </cm:property-placeholder-->
+
+   <ext:property-placeholder>
+   		<ext:location>file:/etc/config/gateway.properties</ext:location> 
+   </ext:property-placeholder>
+   
    <bean id="remoteCacheManagerFactory" class="com.redhat.waw.jstakun.gateway.RemoteCacheManagerFactory">  
 	    <argument value="${HOTROD_HOST}"/>      
 	    <argument value="${HOTROD_PORT}"/>      
@@ -80,7 +80,7 @@
     <setHeader headerName="CamelInfinispanValue">
       <simple>Sensor 1: ${body}</simple>
     </setHeader>
-    <to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{CACHE_NAME}}&amp;sync=false"/>
+    <to uri="infinispan://?cacheContainer=#cacheManager&amp;cacheName={{DEFAULT_CACHE_NAME}}&amp;sync=false"/>
     <log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
   </route>
   
