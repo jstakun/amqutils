@@ -241,6 +241,15 @@
             }
           },
           "spec": {
+            "volumes": [
+                 {
+                      "name": "config-volume",
+                      "configMap": {
+                           "name": "gateway-config"
+                      }
+                 }
+            ],
+            
             "containers": [
               {
                 "name": "${APP_NAME}",
@@ -265,14 +274,15 @@
                     "containerPort": 8778,
                     "name": "jolokia"
                   }
+                ],                   
+                "resources": {},
+                "volumeMounts": [
+                     {
+                          "name": "config-volume",
+                          "mountPath": "/etc/config"
+                     }
                 ],
-                "env": [
-                  {
-                     "name": "CACHE_NAME",
-                     "value": "default"
-                  }
-                ],                    
-                "resources": {}
+                
               }
             ]
           }
