@@ -25,7 +25,7 @@ public class Producer {
 		}
 		
 		try {
-			mqtt.setHost("192.168.1.140", 1883); //using node port
+			mqtt.setHost("master.osecloud.com", 31883); //using node port
 			//mqtt.setHost("172.30.214.17", 1883);
 			mqtt.setUserName("admin");
 			mqtt.setPassword("manager1");

@@ -88,13 +88,13 @@
     <from uri="mqtt:mqtt.sensor.receiver?host=tcp://{{MQTT_HOST}}:{{MQTT_PORT}}&amp;subscribeTopicNames={{MQTT_PREFIX}}/#&amp;userName={{MQTT_USERNAME}}&amp;password={{MQTT_PASSWORD}}"/>
     <convertBodyTo type="com.redhat.waw.iot.model.SensorData"/>
     <validate>
-      <simple>${body.a} &gt; 0 &amp;&amp; ${body.a} &lt; 101</simple>
+      <simple>${body.a} range &#39;0..100&#39;</simple>
     </validate>
     <validate>
-      <simple>${body.b} &gt; 0 &amp;&amp; ${body.b} &lt; 10001</simple>
+      <simple>${body.b} range &#39;0..10000&#39;</simple>
     </validate>
     <validate>
-      <simple>${body.c} &gt; 0 &amp;&amp; ${body.c} &lt; 101</simple>
+      <simple>${body.c} range &#39;0..100&#39;</simple>
     </validate>
     <log message="Received sensor data from queue: ${body}" loggingLevel="INFO" logName="com.redhat.waw.camel.iot"/>
     <setHeader headerName="CamelInfinispanKey">
