@@ -31,15 +31,23 @@
    		<ext:location>file:/etc/config/gateway.properties</ext:location> 
    </ext:property-placeholder>
 
-   <!--cm:property-placeholder id="default.vars" persistent-id="com.redhat.waw.jstakun.gateway">
+   <cm:property-placeholder id="default.vars" persistent-id="com.redhat.waw.jstakun.gateway">
         <cm:default-properties>
+            <cm:property name="HOTROD_HOST" value="172.30.51.53"/>
+            <cm:property name="HOTROD_PORT" value="11333"/>
+            <cm:property name="HOTROD_LIFESPAN" value="10"/>
             <cm:property name="CACHE_NAME" value="default"/>
+            <cm:property name="MQTT_HOST" value="172.30.214.17"/>
+            <cm:property name="MQTT_PORT" value="1883"/>
+            <cm:property name="MQTT_USERNAME" value="admin"/>
+            <cm:property name="MQTT_PASSWORD" value="manager1"/>
+            <cm:property name="MQTT_PREFIX" value="sensor.receiver"/>
         </cm:default-properties>
-   </cm:property-placeholder-->
+   </cm:property-placeholder>
   
    <bean id="remoteCacheManagerFactory" class="com.redhat.waw.jstakun.gateway.RemoteCacheManagerFactory">  
-	    <argument value="172.30.51.53"/>      
-	    <argument value="11333"/>      
+	    <argument value="${HOTROD_HOST}"/>      
+	    <argument value="${HOTROD_PORT}"/>      
    </bean>
  
    <bean id="cacheManager"
@@ -60,10 +68,10 @@
         <transform>
             <simple>Operation failed with message: ${exception.message}</simple>
         </transform>
-    </onException>
+  </onException>
   
   <route id="iot-gateway-default">
-    <from uri="mqtt:mqtt.default.receiver?host=tcp://172.30.214.17:1883&amp;subscribeTopicName=sensor.receiver&amp;userName=admin&amp;password=manager1"/>
+    <from uri="mqtt:mqtt.default.receiver?host=tcp://{{MQTT_HOST}}:{{MQTT_PORT}}&amp;subscribeTopicName={{MQTT_PREFIX}}&amp;userName={{MQTT_USERNAME}}&amp;password={{MQTT_PASSWORD}}"/>
     <convertBodyTo type="java.lang.String"/>
     <log message="Received sensor data from queue: ${body}" loggingLevel="INFO"/>
     <setHeader headerName="CamelInfinispanKey">
@@ -76,31 +84,8 @@
     <log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue}" loggingLevel="INFO"/>
   </route>
   
-  <!--route id="iot-gateway-sensors">
-    <from uri="mqtt:mqtt.sensor.receiver?host=tcp://172.30.214.17:1883&amp;subscribeTopicNames=sensor.receiver/#&amp;userName=admin&amp;password=manager1"/>
-    <convertBodyTo type="java.lang.String"/>
-    <log message="Received sensor data from queue: ${body}" loggingLevel="INFO"/>
-    <setHeader headerName="CamelInfinispanKey">
-      <method ref="utils" method="getCurrentMillis"></method>
-    </setHeader>
-    <setHeader headerName="CamelInfinispanValue">
-      <simple>${body}</simple>
-    </setHeader>
-    <setHeader headerName="CamelInfinispanLifespanTime">
-    	    <constant>10</constant>
-    	</setHeader>
-    	<setHeader headerName="CamelInfinispanTimeUnit">
-    	    <constant>MINUTES</constant>
-    	</setHeader>
-    <setHeader headerName="CamelInfinispanCacheName">
-      <method ref="utils" method="resolveSensorNameFromTopicName(${header.CamelMQTTSubscribeTopic})"></method>
-    </setHeader>
-    <to uri="infinispan://?cacheContainer=#cacheManager&amp;sync=false"/>
-    <log message="Updated entry: ${header.CamelInfinispanKey} with value: ${header.CamelInfinispanValue} in cache ${header.CamelInfinispanCacheName}" loggingLevel="INFO"/>
-  </route-->
-  
   <route id="iot-gateway-sensors">
-    <from uri="mqtt:mqtt.sensor.receiver?host=tcp://172.30.214.17:1883&amp;subscribeTopicNames=sensor.receiver/#&amp;userName=admin&amp;password=manager1"/>
+    <from uri="mqtt:mqtt.sensor.receiver?host=tcp://{{MQTT_HOST}}:{{MQTT_PORT}}&amp;subscribeTopicNames={{MQTT_PREFIX}}/#&amp;userName={{MQTT_USERNAME}}&amp;password={{MQTT_PASSWORD}}"/>
     <convertBodyTo type="com.redhat.waw.iot.model.SensorData"/>
     <validate>
       <simple>${body.a} &gt; 0 &amp;&amp; ${body.a} &lt; 101</simple>
@@ -119,7 +104,7 @@
       <simple>${body}</simple>
     </setHeader>
     <setHeader headerName="CamelInfinispanLifespanTime">
-    	    <constant>10</constant>
+    	    <simple>${properties:HOTROD_LIFESPAN}</simple>
     	</setHeader>
     	<setHeader headerName="CamelInfinispanTimeUnit">
     	    <constant>MINUTES</constant>
