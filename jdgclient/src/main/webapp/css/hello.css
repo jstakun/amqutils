@@ -1,0 +1,24 @@
+output.message {
+    color: blue;
+    font-style: italic;
+}
+
+output.success {
+    color: green;
+    font-style: normal;
+}
+
+output.error {
+    color: red;
+    font-weight: bold;
+    font-style: normal;
+}
+
+div {
+    padding: 10px;
+}
+
+fieldset {
+    border-radius:10px;
+    padding: 10px;
+}

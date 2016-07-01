@@ -68,6 +68,12 @@
 		</dependency>
 		
 		<dependency>
+            <groupId>org.jboss.spec.javax.websocket</groupId>
+            <artifactId>jboss-websocket-api_1.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+		
+		<dependency>
 			<groupId>com.redhat.waw.jboss</groupId>
 			<artifactId>cdm</artifactId>
 			<version>0.0.4.3</version>

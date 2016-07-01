@@ -24,7 +24,7 @@ import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import com.redhat.waw.iot.model.SensorData;
 import com.redhat.waw.ose.model.Decision;
 
-@Path("/")
+@Path("/sensor")
 public class JDGService {
 
 	private static final String VERSION = "1.0.0";
@@ -54,28 +54,28 @@ public class JDGService {
 	}
 	
 	@GET
-	@Path("/sensor/{cache}/keys")
+	@Path("/{cache}/keys")
 	@Produces({"application/json"})
 	public Set<String> getCacheKeys(@PathParam("cache") String cache) {	
 		return getRemoteCache(cache).keySet();
 	}
 	
 	@GET
-	@Path("/sensor/{cache}/data")
+	@Path("/{cache}/data")
 	@Produces({"application/json"})
 	public Map<String, Object> getCacheData(@PathParam("cache") String cache) {	
 		return getBulk(cache);
 	}
 	
 	@GET
-	@Path("/sensor/{cache}/avg/{type}")
+	@Path("/{cache}/avg/{type}")
 	@Produces({"application/json"})
 	public Decision getCacheAvg(@PathParam("cache") String cache, @PathParam("type") String type) {
 		return getSensorAvg(getBulk(cache), type);
 	}
 	
 	@GET
-	@Path("/sensor/{cache}/clear")
+	@Path("/{cache}/clear")
 	@Produces({"application/json"})
 	public Response clearCache(@PathParam("cache") String cache) {
 		getRemoteCache(cache).clear();
