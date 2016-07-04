@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -82,9 +83,9 @@ public class JDGService {
 		return Response.status(200).entity("{\"status\": \"ok\"}").build();	
 	}
 	
-	//prague endpoints
+	//weather endpoints
 	
-	@GET
+	/*@GET
 	@Path("/rain/prague")
 	@Produces({"application/json"})
 	public Decision getRainProbabilty() {
@@ -108,16 +109,16 @@ public class JDGService {
 		d.setValue(Integer.toString(probability));
 		
 		return d;
-	}
+	}*/
 	
 	@GET
-	@Path("/pressure/prague")
+	@Path("/pressure/{location}")
 	@Produces({"application/json"})
-	public Decision getPressure() {
+	public Decision getPressure(@NotNull @PathParam("location") String location) {
 		Decision d = new Decision();
 		
-		d.setId("Prague current pressure");
-		d.setValue(Integer.toString(getCurrentPressure("Prag,cz")));
+		d.setId(location + " current pressure");
+		d.setValue(Integer.toString(getCurrentPressure(location)));
 		
 		return d;
 	}
