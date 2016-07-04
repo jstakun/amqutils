@@ -4,6 +4,8 @@ import java.io.StringReader;
 import java.net.InetAddress;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -31,6 +33,8 @@ public class JDGService {
 	private static final String VERSION = "1.0.0";
 	
 	private static RemoteCacheManager rcm;
+	
+	private static Logger logger = Logger.getLogger("com.redhat.waw.jstakun.jdgclient.JDGService");
 	
 	//sensors endpoints
 	
@@ -145,7 +149,7 @@ public class JDGService {
 	private static RemoteCacheManager getRemoteCacheManager() {
 		if (rcm == null) {
 			
-			System.out.println("Creating RemoteCacheManager instance...");
+			logger.log(Level.INFO, "Creating RemoteCacheManager instance...");
 			
 			String host = System.getenv("SENSOR_DATAGRID_HOTROD_SERVICE_HOST");
 			if (host == null) {
@@ -177,7 +181,7 @@ public class JDGService {
 		if (Character.isDigit(cache.charAt(0))) {
 			cache = "S" + cache;
 		}	
-		System.out.println("Reading " + cache + " data...");
+		logger.log(Level.INFO, "Reading " + cache + " data...");
 		return getRemoteCacheManager().getCache(cache);
 	}
 	
@@ -201,7 +205,7 @@ public class JDGService {
 				}
 				count++;			
 			} else {
-				System.out.println("Can't cast from " + o.getClass().getName() + " to " + SensorData.class.getName());
+				logger.log(Level.INFO, "Can't cast from " + o.getClass().getName() + " to " + SensorData.class.getName());
 			}
 		}
 		
@@ -234,11 +238,11 @@ public class JDGService {
 			
 			int pressure = main.getInt("pressure");
 			
-			System.out.println("Received current Prague pressure: " + pressure);
+			logger.log(Level.INFO, "Received current Prague pressure: " + pressure);
 		
 			return pressure;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			return -1;
 		}
 	}

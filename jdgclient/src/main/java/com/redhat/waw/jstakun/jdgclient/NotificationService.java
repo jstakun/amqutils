@@ -22,12 +22,6 @@ public class NotificationService {
 	
 	private static Map<String, Session> clients = Collections.synchronizedMap(new HashMap<String, Session>());
 	
-	/*@OnMessage
-    public String sayHello(String name) {
-        logger.log(Level.INFO, "Say hello to '" + name + "'");
-        return ("Hello " + name + " from websocket endpoint");
-    }*/
-
 	@OnMessage
     public String registerForTemperatureNotification(String temperature, Session session) {
         logger.log(Level.INFO, "Registered for " + temperature + " temperature notification.");
@@ -37,12 +31,12 @@ public class NotificationService {
     }
 	
     @OnOpen
-    public void helloOnOpen(Session session) {
+    public void notificationOnOpen(Session session) {
     	logger.log(Level.INFO, "WebSocket opened: " + session.getId());
     }
 
     @OnClose
-    public void helloOnClose(CloseReason reason, Session session) {
+    public void notificationOnClose(CloseReason reason, Session session) {
     	registeredSessions.remove(session.getId());
     	clients.remove(session.getId());
     	logger.log(Level.INFO, "WebSocket connection closed with CloseCode: " + reason.getCloseCode());
