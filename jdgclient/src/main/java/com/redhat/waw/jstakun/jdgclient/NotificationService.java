@@ -49,10 +49,11 @@ public class NotificationService {
     }
     
     public static void notifyAllSessions(String sensor, Double temperature) {
+    	logger.log(Level.INFO, "Received notification " + sensor + ": " + temperature);
         for (Map.Entry<String, Double> s : registeredSessions.entrySet()) {
             if (temperature >= s.getValue()) {
             	try {
-            		clients.get(s.getKey()).getBasicRemote().sendObject(sensor + ": " + Double.toString(temperature));
+            		clients.get(s.getKey()).getBasicRemote().sendObject(sensor + ": " + temperature);
             	} catch (Exception e) {
             		logger.log(Level.SEVERE, e.getMessage(), e);
             	}
