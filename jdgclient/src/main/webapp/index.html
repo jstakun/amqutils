@@ -17,7 +17,7 @@
 -->
 <html>
     <head>
-        <title>WebSocket: Say Hello</title>
+        <title>WebSocket: Temperature notification</title>
         <link rel="stylesheet" type="text/css" href="/css/hello.css" />
         <script type="text/javascript">
             var websocket = null;
@@ -29,7 +29,7 @@
                 websocket.onopen = function() {
                     displayStatus('Open');
                     document.getElementById('sayHello').disabled = false;
-                    displayMessage('Connection is now open. Type a name and click Say Hello to send a message.');
+                    displayMessage('Connection is now open. Type temperature and click Register to send a message.');
                 };
                 websocket.onmessage = function(event) {
                     // log the event
@@ -93,8 +93,8 @@
                 </div>
                 <div>
                     <fieldset>
-                        <legend>Type your name below, then click the `Say Hello` button :</legend>
-                        <input id="name" type="text" size="40" style="width: 40%"/>
+                        <legend>Type sensor temperature you want to be notified:</legend>
+                        <input id="name" type="number" min="-100" max="100" required="required" maxlength="3" autofocus="autofocus" value="25" style="width: 40%"/>
                         <input type="button" id="sayHello" onclick="sendMessage();" value="Say Hello" disabled="disabled"/>
                     </fieldset>
                 </div>
