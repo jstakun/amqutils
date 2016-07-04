@@ -115,12 +115,25 @@ public class JDGService {
 	@Path("/pressure/{location}")
 	@Produces({"application/json"})
 	public Decision getPressure(@NotNull @PathParam("location") String location) {
-		Decision d = new Decision();
-		
+		Decision d = new Decision();	
 		d.setId(location + " current pressure");
-		d.setValue(Integer.toString(getCurrentPressure(location)));
-		
+		d.setValue(Integer.toString(getCurrentPressure(location)));	
 		return d;
+	}
+	
+	@GET
+	@Path("/notify")
+	@Produces({"application/json"})
+	public Response sendNotification() {
+		
+		//TODO read from env variable
+		String[] caches = {"sensor1","sensor2","S13556381","S8633913","S13540890"};
+		
+		for (int i=0;i<caches.length;i++) {
+			Decision d = getSensorAvg(getBulk(caches[i]), "a");
+			NotificationService.notifyAllSessions(caches[i], Double.valueOf(d.getValue()));
+		}
+		return Response.status(200).entity("{\"status\": \"ok\"}").build();	
 	}
 	
 	//utils
@@ -129,7 +142,7 @@ public class JDGService {
 		return getRemoteCache(cache).getBulk();
 	}
 
-	private static RemoteCache<String, Object> getRemoteCache(String cache) {
+	private static RemoteCacheManager getRemoteCacheManager() {
 		if (rcm == null) {
 			
 			System.out.println("Creating RemoteCacheManager instance...");
@@ -157,9 +170,12 @@ public class JDGService {
 			rcm = new RemoteCacheManager(builder.build(), true); 		
 		}
 		
+		return rcm;
+	}
+	
+	private static RemoteCache<String, Object> getRemoteCache(String cache) {
 		System.out.println("Reading S" + cache + " data...");
-		
-		return rcm.getCache("S" + cache);
+		return getRemoteCacheManager().getCache("S" + cache);
 	}
 	
 	private static Decision getSensorAvg(Map<String, Object> data, String sensor) {	
@@ -198,7 +214,7 @@ public class JDGService {
 		return d;
 	}
 	
-	public static int getCurrentPressure(String location) {
+	protected static int getCurrentPressure(String location) {
 		try {
 			Client client = ClientBuilder.newClient();
 			String weather = client.target("http://api.openweathermap.org/data/2.5/weather?q=" + location + "&APPID=ea915ccfec3c2dd13466103568649663&units=metric")
