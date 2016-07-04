@@ -142,7 +142,7 @@ public class JDGService {
 	
 	//utils
 	
-	private static Map<String, Object> getBulk(String cache) {
+	protected static Map<String, Object> getBulk(String cache) {
 		return getRemoteCache(cache).getBulk();
 	}
 
@@ -185,7 +185,7 @@ public class JDGService {
 		return getRemoteCacheManager().getCache(cache);
 	}
 	
-	private static Decision getSensorAvg(Map<String, Object> data, String sensor) {	
+	protected static Decision getSensorAvg(Map<String, Object> data, String sensor) {	
 		double sum = 0;
 		int count = 0;
 		String id = "unknown";

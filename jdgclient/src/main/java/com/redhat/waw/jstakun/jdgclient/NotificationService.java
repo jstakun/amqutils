@@ -6,12 +6,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+
+import com.redhat.waw.ose.model.Decision;
 
 @ServerEndpoint("/notification")
 public class NotificationService {
@@ -21,6 +24,8 @@ public class NotificationService {
 	private static Map<String, Double> registeredSessions = Collections.synchronizedMap(new HashMap<String, Double>());
 	
 	private static Map<String, Session> clients = Collections.synchronizedMap(new HashMap<String, Session>());
+	
+	private Runnable intervalNotifier;
 	
 	@OnMessage
     public String registerForTemperatureNotification(String temperature, Session session) {
@@ -53,5 +58,33 @@ public class NotificationService {
             	}
             }
         }
+    }
+    
+    //TODO write thread to notify 
+    
+    @PostConstruct
+    public void startIntervalNotifier() {
+        logger.log(Level.INFO, "Starting interval notifier");
+        intervalNotifier = new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        Thread.sleep(10000);
+                        //TODO read from env variable
+                		String[] caches = {"sensor1","sensor2","S13556381","S8633913","S13540890"};
+                		
+                		for (int i=0;i<caches.length;i++) {
+                			Decision d = JDGService.getSensorAvg(JDGService.getBulk(caches[i]), "a");
+                			notifyAllSessions(caches[i], Double.valueOf(d.getValue()));
+                		}
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        new Thread(intervalNotifier).start();
     }
 }
