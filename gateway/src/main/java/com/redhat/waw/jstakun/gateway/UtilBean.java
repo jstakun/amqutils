@@ -7,12 +7,16 @@ public class UtilBean {
 		if (topicName != null) {
 			int pos = topicName.indexOf("/");
 			if (pos > 0 && pos < topicName.length()) {
-				return "S" + topicName.substring(topicName.indexOf("/")+1);
+				String cacheName = topicName.substring(topicName.indexOf("/")+1);		
+				if (Character.isDigit(cacheName.charAt(0))) {		
+					cacheName = "S" + cacheName;
+				}
+				return cacheName;
 			} else {
-				throw new Exception("Topic name must match pattern prefix/sensor_name!");
+				throw new Exception("Topic name must match pattern prefix/sensor_name !");
 			}
 		} else {
-			throw new Exception("Topic name can't be empty!");
+			throw new Exception("Topic name can't be empty !");
 		}
 	}
 
