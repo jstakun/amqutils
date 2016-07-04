@@ -33,7 +33,7 @@ public class NotificationService {
         logger.log(Level.INFO, "Registered for " + temperature + " temperature notification.");
         registeredSessions.put(session.getId(), Double.valueOf(temperature).doubleValue());
         clients.put(session.getId(), session);
-        return ("Registered for " + temperature +  " notification.");
+        return ("Registered for " + temperature +  " temperature notification.");
     }
 	
     @OnOpen

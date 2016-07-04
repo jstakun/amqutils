@@ -174,8 +174,11 @@ public class JDGService {
 	}
 	
 	private static RemoteCache<String, Object> getRemoteCache(String cache) {
-		System.out.println("Reading S" + cache + " data...");
-		return getRemoteCacheManager().getCache("S" + cache);
+		if (Character.isDigit(cache.charAt(0))) {
+			cache = "S" + cache;
+		}	
+		System.out.println("Reading " + cache + " data...");
+		return getRemoteCacheManager().getCache(cache);
 	}
 	
 	private static Decision getSensorAvg(Map<String, Object> data, String sensor) {	
