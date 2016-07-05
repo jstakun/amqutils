@@ -281,8 +281,7 @@
                           "name": "config-volume",
                           "mountPath": "/etc/config"
                      }
-                ],
-                
+                ]               
               }
             ]
           }
