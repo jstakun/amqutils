@@ -67,8 +67,8 @@
 
             function displayMessage(data, style) {
                 var message = document.getElementById('hellomessage');
-                message.setAttribute("class", style);
-                message.innerHTML = data + '<br/>' + message.value;
+                message.className = style;
+                message.innerHTML = data + '<br/>' + message.innerHTML;
             }
 
             function displayStatus(status) {
