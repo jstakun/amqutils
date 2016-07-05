@@ -68,7 +68,7 @@
             function displayMessage(data, style) {
                 var message = document.getElementById('hellomessage');
                 message.setAttribute("class", style);
-                message.value = '<b>' + data + '</b><br/>' + message.value;
+                message.innerHTML = data + '<br/>' + message.value;
             }
 
             function displayStatus(status) {
@@ -99,8 +99,7 @@
                     </fieldset>
                 </div>
                 <div>Current WebSocket Connection Status: <output id="currentstatus" class="message">Closed</output></div>
-                <div>
-                    <output id="hellomessage" />
+                <div id="hellomessage">
                 </div>
             </div>
         </div>
