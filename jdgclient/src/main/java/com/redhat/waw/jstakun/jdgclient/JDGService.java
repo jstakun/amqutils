@@ -20,6 +20,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
@@ -76,7 +77,7 @@ public class JDGService {
 	@Path("/{cache}/avg/{type}")
 	@Produces({"application/json"})
 	public Decision getCacheAvg(@PathParam("cache") String cache, @PathParam("type") String type) {
-		return getSensorAvg(getBulk(cache), type);
+		return getSensorAvg(cache, type);
 	}
 	
 	@GET
@@ -130,19 +131,23 @@ public class JDGService {
 	@Produces({"application/json"})
 	public Response sendNotification() {
 		
-		//TODO read from env variable
-		String[] caches = {"sensor1","sensor2","S13556381","S8633913","S13540890"};
+		String cacheNames = System.getenv("CACHE_NAMES");
+		String[] caches = StringUtils.split(cacheNames, ',');
 		
-		for (int i=0;i<caches.length;i++) {
-			Decision d = getSensorAvg(getBulk(caches[i]), "a");
-			NotificationService.notifyAllSessions(caches[i], Double.valueOf(d.getValue()));
+		if (caches != null) {
+			for (int i=0;i<caches.length;i++) {
+				Decision d = getSensorAvg(caches[i], "a");
+				NotificationService.notifyAllSessions(caches[i], Double.valueOf(d.getValue()));
+			}
+		} else {
+			logger.log(Level.WARNING, "Caches list is empty!");
 		}
 		return Response.status(200).entity("{\"status\": \"ok\"}").build();	
 	}
 	
 	//utils
 	
-	protected static Map<String, Object> getBulk(String cache) {
+	private static Map<String, Object> getBulk(String cache) {
 		return getRemoteCache(cache).getBulk();
 	}
 
@@ -185,7 +190,8 @@ public class JDGService {
 		return getRemoteCacheManager().getCache(cache);
 	}
 	
-	protected static Decision getSensorAvg(Map<String, Object> data, String sensor) {	
+	protected static Decision getSensorAvg(String cache, String sensor) {
+		Map<String, Object> data = getBulk(cache); 
 		double sum = 0;
 		int count = 0;
 		String id = "unknown";
