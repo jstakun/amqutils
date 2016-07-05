@@ -60,8 +60,6 @@ public class NotificationService {
         }
     }
     
-    //TODO write thread to notify 
-    
     @PostConstruct
     public void startIntervalNotifier() {
         logger.log(Level.INFO, "Starting interval notifier");
