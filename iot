@@ -1,0 +1,75 @@
+Gateway
+
+oadm new-project iot-gateway --display-name='IoT Gateway' --description='Demo IoT Gateway' --node-selector='region=dev'
+
+oc project iot-gateway
+
+oc new-app amq62-persistent -p VOLUME_CAPACITY=128Mi,MQ_USERNAME=admin,MQ_PASSWORD=manager1,MQ_PROTOCOL=mqtt
+
+oc edit svc broker-amq-mqtt -o json
+
+#this is needed to expose mqtt service to external work
+#add nodePort and change type to NodePort 
+
+"spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 1883,
+                "targetPort": 1883,
+                "nodePort": 31883
+            }
+        ],
+        "selector": {
+            "deploymentConfig": "broker-amq"
+        },
+        "portalIP": "172.30.214.17",
+        "clusterIP": "172.30.214.17",
+        "type": "NodePort",
+        "sessionAffinity": "None"
+    },
+
+DC
+
+oadm new-project iot-dc --display-name='IoT Data Center' --description='Demo IoT Data Center' --node-selector='region=dev'
+
+oc project iot-dc
+
+oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default -n $(oc project -q)
+
+oc new-app datagrid65-basic \
+    -p APPLICATION_NAME=sensor-datagrid,MEMCACHED_CACHE=default,INFINISPAN_CONNECTORS=hotrod,IMAGE_STREAM_NAMESPACE=openshift
+
+oc env dc sensor-datagrid "CACHE_NAMES=default,sensor1,sensor2,S13556381,S8633913,S13540890"
+
+oc new-app eap70-basic-s2i \
+    -p APPLICATION_NAME=processor,SOURCE_REPOSITORY_URL=https://github.com/jstakun/amqutils,SOURCE_REPOSITORY_REF=master,CONTEXT_DIR=jdgclient
+
+oc env dc processor "CACHE_NAMES=default,sensor1,sensor2,S13556381,S8633913,S13540890" 
+
+Gateway 
+
+oc project iot-gateway
+
+#create config pointing to mqtt and hotrod services created above
+
+vi gateway-config.json
+
+{
+    "kind": "ConfigMap",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "gateway-config"
+    },
+    "data": {
+        "gateway.properties": "HOTROD_HOST=172.30.55.101\nHOTROD_PORT=11333\nHOTROD_LIFESPAN=10\nDEFAULT_CACHE_NAME=default\nMQTT_HOST=172.30.8.57\nMQTT_PORT=1883\nMQTT_USERNAME=admin\nMQTT_PASSWORD=manager1\nMQTT_PREFIX=sensor.receiver"
+    }
+}
+
+oc create -f gateway-config.json
+
+oc create -f https://raw.githubusercontent.com/jstakun/amqutils/master/gateway/gateway-template.json
+
+oc new-app gateway
+
+
