@@ -29,7 +29,7 @@
                 websocket.onopen = function() {
                     displayStatus('Open');
                     document.getElementById('sayHello').disabled = false;
-                    displayMessage('Connection is now open. Type temperature and click Register to send a message.');
+                    displayMessage('Connection is now open. Type temperature and click Register to start receiving notifications.');
                 };
                 websocket.onmessage = function(event) {
                     // log the event
