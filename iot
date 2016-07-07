@@ -8,7 +8,7 @@ oc new-app amq62-persistent -p VOLUME_CAPACITY=128Mi,MQ_USERNAME=admin,MQ_PASSWO
 
 oc edit svc broker-amq-mqtt -o json
 
-#this is needed to expose mqtt service to external work
+#this is needed to expose mqtt service to external world
 #add nodePort and change type to NodePort 
 
 "spec": {

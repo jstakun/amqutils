@@ -98,7 +98,7 @@
     </validate>
     <log message="Received sensor data from queue: ${body}" loggingLevel="INFO" logName="com.redhat.waw.camel.iot"/>
     <setHeader headerName="CamelInfinispanKey">
-      <method ref="utils" method="getCurrentMillis"></method>
+      <method ref="utils" method="getCacheKey(${header.CamelMQTTSubscribeTopic})"></method>
     </setHeader>
     <setHeader headerName="CamelInfinispanValue">
       <simple>${body}</simple>

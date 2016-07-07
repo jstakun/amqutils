@@ -23,4 +23,9 @@ public class UtilBean {
     public String getCurrentMillis() {
     	return Long.toString(System.currentTimeMillis());
     }
+    
+    public String getCacheKey(String topicName) throws Exception {
+    	String cacheName = resolveSensorNameFromTopicName(topicName);
+    	return cacheName + "-" + getCurrentMillis();
+    }
 }
