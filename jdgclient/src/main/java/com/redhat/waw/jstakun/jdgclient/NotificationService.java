@@ -39,7 +39,7 @@ public class NotificationService {
 	
     @OnOpen
     public void notificationOnOpen(Session session) {
-    	logger.log(Level.INFO, "WebSocket opened: " + session.getId());
+    	logger.log(Level.INFO, "WebSocket session opened: " + session.getId());
     }
 
     @OnClose
