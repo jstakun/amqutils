@@ -48,6 +48,7 @@
 
             function disconnect() {
                 if (websocket != null) {
+                	websocket.send("bye");
                     websocket.close();
                     websocket = null;
                 }

@@ -30,11 +30,16 @@ public class NotificationService {
 	private Runnable intervalNotifier;
 	
 	@OnMessage
-    public String registerForTemperatureNotification(String temperature, Session session) {
-        logger.log(Level.INFO, "Registered for " + temperature + " temperature notification.");
-        registeredSessions.put(session.getId(), Double.valueOf(temperature).doubleValue());
-        clients.put(session.getId(), session);
-        return ("Registered for " + temperature +  " temperature notification.");
+    public String notificationOnMessage(String message, Session session) {
+		if (message.equals("bye")) {
+			notificationOnClose(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, message), session);
+			return "Your session has been terminated.";
+		} else {
+			logger.log(Level.INFO, "Registered for " + message + " temperature notification.");
+			registeredSessions.put(session.getId(), Double.valueOf(message).doubleValue());
+			clients.put(session.getId(), session);
+			return "Registered for " + message +  " temperature notification.";
+		}
     }
 	
     @OnOpen
