@@ -48,8 +48,7 @@
 
             function disconnect() {
                 if (websocket != null) {
-                	websocket.send("bye");
-                    websocket.close();
+                	websocket.close();
                     websocket = null;
                 }
                 message.setAttribute("class", "message");

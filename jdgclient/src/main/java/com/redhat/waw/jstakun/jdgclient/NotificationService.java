@@ -31,15 +31,10 @@ public class NotificationService {
 	
 	@OnMessage
     public String notificationOnMessage(String message, Session session) {
-		if (message.equals("bye")) {
-			notificationOnClose(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, message), session);
-			return "Your session has been terminated.";
-		} else {
-			logger.log(Level.INFO, "Registered for " + message + " temperature notification.");
-			registeredSessions.put(session.getId(), Double.valueOf(message).doubleValue());
-			clients.put(session.getId(), session);
-			return "Registered for " + message +  " temperature notification.";
-		}
+		logger.log(Level.INFO, "Registered for " + message + " temperature notification.");
+		registeredSessions.put(session.getId(), Double.valueOf(message).doubleValue());
+		clients.put(session.getId(), session);
+		return "Registered for " + message +  " temperature notification.";
     }
 	
     @OnOpen
@@ -51,7 +46,7 @@ public class NotificationService {
     public void notificationOnClose(CloseReason reason, Session session) {
     	registeredSessions.remove(session.getId());
     	clients.remove(session.getId());
-    	logger.log(Level.INFO, "WebSocket connection closed with CloseCode: " + reason.getCloseCode());
+    	logger.log(Level.INFO, "WebSocket session " + session.getId() + " closed with CloseCode: " + reason.getCloseCode());
     }
     
     public static void notifyAllSessions(String sensor, Double temperature) {
